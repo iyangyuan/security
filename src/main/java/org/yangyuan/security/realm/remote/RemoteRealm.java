@@ -3,7 +3,10 @@ package org.yangyuan.security.realm.remote;
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.User;
 import org.yangyuan.security.config.ResourceManager;
+import org.yangyuan.security.core.QqRemoteToken;
 import org.yangyuan.security.core.RemoteToken;
+import org.yangyuan.security.core.WbRemoteToken;
+import org.yangyuan.security.core.WxRemoteToken;
 import org.yangyuan.security.core.common.SecurityToken;
 import org.yangyuan.security.exception.AuthRemoteFailException;
 import org.yangyuan.security.http.client.HttpClient;
@@ -44,7 +47,7 @@ public class RemoteRealm extends AbstractRealm{
         
         @Override
         public User getUser(SecurityToken token) {
-            RemoteToken remoteToken = (RemoteToken) token;
+            QqRemoteToken remoteToken = (QqRemoteToken) token;
             
             try {
                 /**
@@ -118,7 +121,7 @@ public class RemoteRealm extends AbstractRealm{
         
         @Override
         public User getUser(SecurityToken token) {
-            RemoteToken remoteToken = (RemoteToken) token;
+            WxRemoteToken remoteToken = (WxRemoteToken) token;
             
             try {
                 String infoApi = "https://api.weixin.qq.com/sns/userinfo?access_token=" 
@@ -163,7 +166,7 @@ public class RemoteRealm extends AbstractRealm{
 
         @Override
         public User getUser(SecurityToken token) {
-            RemoteToken remoteToken = (RemoteToken) token;
+            WbRemoteToken remoteToken = (WbRemoteToken) token;
             
             try {
                 String infoApi = "https://api.weibo.com/2/users/show.json?access_token=" + remoteToken.getAccessToken();
