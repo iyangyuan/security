@@ -22,7 +22,7 @@ public class EhcacheSessionDao implements CacheSessionDao<String, Object>{
         /**
          * 初始化底层缓存，这里初始化的缓存是带有自定义配置的
          */
-        CacheManager manager = CacheManager.newInstance(ResourceManager.core().getAppClassPath() + "/config/ehcache.xml");
+        CacheManager manager = CacheManager.newInstance(ResourceManager.core().getAppClassPath() + "security-ehcache.xml");
         cache = manager.getCache("securitySessionCache");
     }
     
