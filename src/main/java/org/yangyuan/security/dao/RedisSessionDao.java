@@ -236,7 +236,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>{
             List<String> principals = new ArrayList<String>();
             String partition = ResourceManager.core().getPrincipalFactory().getPartition(ResourceManager.core().getPrincipalFactory().newPrincipal(userUnionid));
             ScanParams params = new ScanParams();
-            params.match(userUnionid + "-*");
+            params.match(userUnionid + "_*");
             params.count(1000);
             ScanResult<Entry<String, String>> result;
             String finished = "0";
