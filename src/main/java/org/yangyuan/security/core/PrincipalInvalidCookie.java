@@ -1,20 +1,16 @@
 package org.yangyuan.security.core;
 
+import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.AbstractCookie;
 
 /**
- * 持久的主cookie实现
+ * 无效的主cookie实现
  * @author yangyuan
  * @date 2018年4月3日
  */
-public class PrincipalPersistentCookie extends AbstractCookie{
-    private final String principal;
-    
-    public PrincipalPersistentCookie(String principal){
-        this.principal = principal;
-    }
-    
+public class PrincipalInvalidCookie extends AbstractCookie{
+
     @Override
     protected String getName() {
         return ResourceManager.cookie().getName();
@@ -22,7 +18,13 @@ public class PrincipalPersistentCookie extends AbstractCookie{
 
     @Override
     protected String getValue() {
-        return this.principal;
+        return StringUtils.EMPTY;
     }
 
+    @Override
+    protected int getMaxAge() {
+        return 0;
+    }
+    
+    
 }

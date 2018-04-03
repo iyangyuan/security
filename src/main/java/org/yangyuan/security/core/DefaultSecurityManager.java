@@ -3,7 +3,6 @@ package org.yangyuan.security.core;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.User;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.CacheManager;
@@ -95,11 +94,9 @@ public class DefaultSecurityManager implements SecurityManager{
         
         /**
          * 客户端cookie移除
-         * TODO:封装
          */
-        Cookie cookie = new Cookie(ResourceManager.cookie().getName(), StringUtils.EMPTY);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        PrincipalInvalidCookie cookie = new PrincipalInvalidCookie();
+        response.addCookie(cookie.toHttpCookie());
     }
     
     @Override
