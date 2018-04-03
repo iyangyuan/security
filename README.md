@@ -123,7 +123,7 @@ dao.remoteRealmAdaptor=userService
 * dao.jdbcRealmAdaptor，提供用户名/密码登陆模式必要的数据，具体出参入参参考源码注释，实现`JdbcRealmAdaptor`接口。
 * dao.remoteRealmAdaptor，提供第三方登陆模式必要的数据，具体出参入参参考源码注释，实现`RemoteRealmAdaptor`接口。
 
-`security.properties`文件中配置的所有类型，可以配置成完整类名(包名+类名)，也可以配置成`spring IOC`中中的`Bean`名称，根据业务情况自由选择。
+`security.properties`文件中配置的所有类型，可以配置成完整类名(包名+类名)，也可以配置成`spring IOC`中的`Bean`名称，根据业务情况自由选择。
 
 ## 使用
 
