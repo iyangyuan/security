@@ -169,7 +169,7 @@ public class SecurityUtils {
      * 获取在线人数
      * @return 在线人数
      */
-    public static long numberOfOnline(){
+    public static long getStatisticalNumberOfOnline(){
         CacheSessionDao<String, Object> redisSessionDao = ResourceManager.dao().getRedisSessionDao();
         if(redisSessionDao instanceof StatisticalSessionDao){
             return ((StatisticalSessionDao) redisSessionDao).numberOfOnline();
@@ -182,7 +182,7 @@ public class SecurityUtils {
      * 获取活跃人数
      * @return 活跃人数
      */
-    public static long numberOfActivity(){
+    public static long getStatisticalNumberOfActivity(){
         CacheSessionDao<String, Object> redisSessionDao = ResourceManager.dao().getRedisSessionDao();
         if(redisSessionDao instanceof StatisticalSessionDao){
             return ((StatisticalSessionDao) redisSessionDao).numberOfActivity();
