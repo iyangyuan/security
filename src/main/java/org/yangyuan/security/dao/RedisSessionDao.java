@@ -23,6 +23,7 @@ import org.yangyuan.security.core.DefaultSession;
 import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.common.Subject;
 import org.yangyuan.security.dao.common.CacheSessionDao;
+import org.yangyuan.security.dao.common.StatisticalSessionDao;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -37,7 +38,7 @@ import redis.clients.jedis.ScanResult;
  * @date 2017年4月26日
  */
 @SuppressWarnings("unchecked")
-public class RedisSessionDao implements CacheSessionDao<String, Object>{
+public class RedisSessionDao implements CacheSessionDao<String, Object>, StatisticalSessionDao {
     private static final Log log = LogFactory.getLog(RedisSessionDao.class);
     
     /**
@@ -155,6 +156,11 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>{
              */
             redis.zadd(buildeSetKey(partition), System.currentTimeMillis() + ResourceManager.session().getExpiresMilliseconds(), subject.getPrincipal());
             
+            /**
+             * 统计
+             */
+            online(principal, redis);
+            
             return DefaultSubject.getInstance(principal, valid, session);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -196,7 +202,12 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>{
             String partition = ResourceManager.core().getPrincipalFactory().getPartition(subject.getPrincipal());
             redis.hset(buildeHashKey(partition), subject.getPrincipal(), subjectStr);
             redis.zadd(buildeSetKey(partition), System.currentTimeMillis() + ResourceManager.session().getExpiresMilliseconds(), subject.getPrincipal());
-        
+            
+            /**
+             * 统计
+             */
+            online(subject.getPrincipal(), redis);
+            
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -272,6 +283,84 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>{
         }
     }
     
+    @Override
+    public long numberOfOnline() {
+        Jedis redis = null;
+        try {
+            redis = ResourceManager.common().getRedisResourceFactory().getResource();
+            
+            return redis.pfcount(buildOnlineKey());
+        } finally {
+            if(redis != null){
+                redis.close();
+                redis = null;
+            }
+        }
+    }
+    
+    /**
+     * 用户上线
+     * @param principal 安全唯一标识
+     * @param redis redis客户端连接
+     */
+    private void online(String principal, Jedis redis){
+        String key = buildOnlineKey();
+        boolean newKey = false;
+        if(!redis.exists(key)){
+            newKey = true;
+        }
+        
+        redis.pfadd(key, ResourceManager.core().getPrincipalFactory().getUserUnionid(principal));
+        
+        if(newKey){
+            redis.expire(key, buildOnlineKeyTtl());
+        }
+    }
+    
+    @Override
+    public long numberOfActivity() {
+        Jedis redis = null;
+        try {
+            redis = ResourceManager.common().getRedisResourceFactory().getResource();
+            
+            String key;
+            long n = 0;
+            for(int i = 48; i < 123; i++){
+                if(i == 58){
+                    i = 97;
+                }
+                
+                key = buildeHashKey(String.valueOf((char) i));
+                n = n + redis.hlen(key);
+            }
+            
+            return n;
+        } finally {
+            if(redis != null){
+                redis.close();
+                redis = null;
+            }
+        }
+    }
+    
+    /**
+     * 构造在线统计key
+     * @return key
+     */
+    private static String buildOnlineKey(){
+        return "security:session:statistical:online";
+    }
+    
+    /**
+     * 构造在线统计key有效期
+     * <br>
+     * 此有效期为缓存有效期的<b>2</b>倍，即<b>security-ehcache.xml</b>配置文件中<b>timeToLiveSeconds</b>值的<b>2</b>倍
+     * @return 有效期
+     */
+    private static int buildOnlineKeyTtl(){
+        return 14400;
+    }
+    
     /**
      * 构造subject hash key
      * <br>
@@ -306,6 +395,5 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>{
             gcStop();
         }
     }
-
     
 }

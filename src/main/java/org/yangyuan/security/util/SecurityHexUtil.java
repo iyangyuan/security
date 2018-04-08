@@ -1,5 +1,10 @@
 package org.yangyuan.security.util;
 
+/**
+ * 十六进制工具类
+ * @author yangyuan
+ * @date 2018年4月8日
+ */
 public class SecurityHexUtil {
     private final static String[] hexDigits = {"0", "1", "2", "3", "4", "5", "6", "7",
             "8", "9", "a", "b", "c", "d", "e", "f"};

@@ -13,6 +13,8 @@ import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.SecurityToken;
 import org.yangyuan.security.core.common.Session;
 import org.yangyuan.security.core.common.Subject;
+import org.yangyuan.security.dao.common.CacheSessionDao;
+import org.yangyuan.security.dao.common.StatisticalSessionDao;
 
 /**
  * 安全认证工具类
@@ -161,5 +163,31 @@ public class SecurityUtils {
     public static void invalidCache(){
         CacheManager<String, Object> cacheManager = ResourceManager.core().getCacheManager();
         cacheManager.invalid((DefaultSubject) getSubject());
+    }
+    
+    /**
+     * 获取在线人数
+     * @return 在线人数
+     */
+    public static long numberOfOnline(){
+        CacheSessionDao<String, Object> redisSessionDao = ResourceManager.dao().getRedisSessionDao();
+        if(redisSessionDao instanceof StatisticalSessionDao){
+            return ((StatisticalSessionDao) redisSessionDao).numberOfOnline();
+        }
+        
+        return 0l;
+    }
+    
+    /**
+     * 获取活跃人数
+     * @return 活跃人数
+     */
+    public static long numberOfActivity(){
+        CacheSessionDao<String, Object> redisSessionDao = ResourceManager.dao().getRedisSessionDao();
+        if(redisSessionDao instanceof StatisticalSessionDao){
+            return ((StatisticalSessionDao) redisSessionDao).numberOfActivity();
+        }
+        
+        return 0l;
     }
 }
