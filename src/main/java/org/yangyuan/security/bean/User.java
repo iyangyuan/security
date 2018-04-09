@@ -61,5 +61,62 @@ public class User {
         this.roles = roles;
     }
     
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(256);
+        
+        builder.append("{");
+        
+        builder.append("\"unionid\": ");
+        if(this.unionid == null){
+            builder.append("null, ");
+        }else{
+            builder.append("\"");
+            builder.append(this.unionid);
+            builder.append("\", ");
+        }
+        
+        builder.append("\"nickname\": ");
+        if(this.nickname == null){
+            builder.append("null, ");
+        }else{
+            builder.append("\"");
+            builder.append(this.nickname);
+            builder.append("\", ");
+        }
+        
+        builder.append("\"portrait\": ");
+        if(this.portrait == null){
+            builder.append("null, ");
+        }else{
+            builder.append("\"");
+            builder.append(this.portrait);
+            builder.append("\", ");
+        }
+        
+        builder.append("\"roles\": ");
+        if(this.roles == null){
+            builder.append("null");
+        }else if(this.roles.size() == 0){
+            builder.append("[]");
+        }else {
+            builder.append("[");
+            int limit = this.roles.size() - 1;
+            for(int i = 0; i < this.roles.size(); i++){
+                builder.append("\"");
+                builder.append(this.roles.get(i).toString());
+                builder.append("\"");
+                
+                if(i != limit){
+                    builder.append(", ");
+                }
+            }
+            builder.append("]");
+        }
+        
+        builder.append("}");
+        
+        return new String(builder);
+    }
     
 }

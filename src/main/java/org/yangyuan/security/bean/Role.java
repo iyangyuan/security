@@ -27,6 +27,10 @@ public class Role {
     private final String name;
     /**
      * 角色级别
+     * <br>
+     * 级别从<b>1</b>开始，即最低<b>1</b>级
+     * <br>
+     * <b>0</b>表示无级别，即忽略级别
      */
     private final int level;
     /**
@@ -223,6 +227,25 @@ public class Role {
         }
         
         return roleList;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(32);
+        
+        if(StringUtils.isNotBlank(this.comparator)){
+            builder.append(this.comparator);
+        }
+        
+        builder.append(this.name);
+        
+        if(this.level != 0){
+            builder.append("{");
+            builder.append(this.level);
+            builder.append("}");
+        }
+        
+        return new String(builder);
     }
     
 }
