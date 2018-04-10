@@ -25,6 +25,10 @@ public class PrincipalInvalidCookie extends AbstractCookie{
     protected int getMaxAge() {
         return 0;
     }
-    
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
     
 }

@@ -86,5 +86,36 @@ public class UserAdaptor {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[password](");
+        builder.append(getPassword());
+        builder.append(")\n");
+        
+        builder.append("[unionid](");
+        builder.append(getUnionid());
+        builder.append(")\n");
+        
+        builder.append("[nickname](");
+        builder.append(getNickname());
+        builder.append(")\n");
+        
+        builder.append("[portrait](");
+        builder.append(getPortrait());
+        builder.append(")\n");
+        
+        builder.append("[roles](");
+        builder.append(getRoles());
+        builder.append(")\n");
+        
+        builder.append("[openid](");
+        builder.append(getOpenid());
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
     
 }

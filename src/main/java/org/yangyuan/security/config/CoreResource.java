@@ -173,5 +173,56 @@ public class CoreResource {
             return new CoreResource(this);
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[charset](");
+        builder.append(getCharset());
+        builder.append(")\n");
+        
+        builder.append("[appClassPath](");
+        builder.append(getAppClassPath());
+        builder.append(")\n");
+        
+        builder.append("[useClientSubjectLogin](");
+        builder.append(isUseClientSubjectLogin());
+        builder.append(")\n");
+        
+        builder.append("[SecurityManager](");
+        if(getSecurityManager() == null){
+            builder.append("null");
+        }else{
+            builder.append(getSecurityManager().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[PrincipalFactory](");
+        if(getPrincipalFactory() == null){
+            builder.append("null");
+        }else{
+            builder.append(getPrincipalFactory().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[CacheManager](");
+        if(getCacheManager() == null){
+            builder.append("null");
+        }else{
+            builder.append(getCacheManager().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[SecurityAuthHandler](");
+        if(getSecurityAuthHandler() == null){
+            builder.append("null");
+        }else{
+            builder.append(getSecurityAuthHandler().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
     
 }

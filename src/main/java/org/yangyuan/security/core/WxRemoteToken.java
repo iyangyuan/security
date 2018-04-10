@@ -29,4 +29,18 @@ public class WxRemoteToken extends RemoteToken{
     public int getPlanform() {
         return 2;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append(super.toString());
+        
+        builder.append("[openid](");
+        builder.append(getOpenid());
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
+    
 }

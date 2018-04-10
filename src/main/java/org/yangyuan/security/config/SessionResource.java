@@ -94,5 +94,28 @@ public class SessionResource {
             return new SessionResource(this);
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[expiresMilliseconds](");
+        builder.append(getExpiresMilliseconds());
+        builder.append(")\n");
+        
+        builder.append("[gcOpen](");
+        builder.append(isGcOpen());
+        builder.append(")\n");
+        
+        builder.append("[gcScript](");
+        builder.append(getGcScript());
+        builder.append(")\n");
+        
+        builder.append("[gcDelaySecond](");
+        builder.append(getGcDelaySecond());
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
     
 }

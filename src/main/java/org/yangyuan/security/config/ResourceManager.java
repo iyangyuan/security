@@ -198,6 +198,52 @@ public class ResourceManager {
         }
         
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(1024);
+        
+        builder.append("#CommonResource \n");
+        if(common() == null){
+            builder.append("null");
+        }else{
+            builder.append(common().toString());
+        }
+        builder.append("\n");
+        
+        builder.append("#CookieResource \n");
+        if(cookie() == null){
+            builder.append("null");
+        }else{
+            builder.append(cookie().toString());
+        }
+        builder.append("\n");
+        
+        builder.append("#CoreResource \n");
+        if(core() == null){
+            builder.append("null");
+        }else{
+            builder.append(core().toString());
+        }
+        builder.append("\n");
+        
+        builder.append("#DaoResource \n");
+        if(dao() == null){
+            builder.append("null");
+        }else{
+            builder.append(dao().toString());
+        }
+        builder.append("\n");
+        
+        builder.append("#SessionResource \n");
+        if(session() == null){
+            builder.append("null");
+        }else{
+            builder.append(session().toString());
+        }
+        builder.append("\n");
+        
+        return new String(builder);
+    }
     
 }

@@ -24,5 +24,10 @@ public class PrincipalPersistentCookie extends AbstractCookie{
     protected String getValue() {
         return this.principal;
     }
-
+    
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+    
 }

@@ -30,5 +30,10 @@ public class PrincipalSessionCookie extends AbstractCookie{
     protected int getMaxAge() {
         return -1;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
     
 }

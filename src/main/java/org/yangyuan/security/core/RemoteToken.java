@@ -34,6 +34,20 @@ public abstract class RemoteToken implements SecurityToken {
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[accessToken](");
+        builder.append(getAccessToken());
+        builder.append(")\n");
+        
+        builder.append("[planform](");
+        builder.append(getPlanform());
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
     
 }

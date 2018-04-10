@@ -33,4 +33,24 @@ public class SecurityFilterManager {
     public static SecurityFilter getFilterChain(){
         return chainPointer;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(256);
+        SecurityFilter filter = getFilterChain();
+        if(filter != null){
+            builder.append("[");
+            builder.append(filter.getClass().getName());
+            builder.append("]");
+            while(filter.getNext() != null){
+                filter = filter.getNext();
+                builder.append("->[");
+                builder.append(filter.getClass().getName());
+                builder.append("]");
+            }
+        }
+        
+        return new String(builder);
+    }
+    
 }

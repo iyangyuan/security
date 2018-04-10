@@ -165,5 +165,75 @@ public class DaoResource {
         }
     }
     
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[EhcacheSessionDao](");
+        if(getEhcacheSessionDao() == null){
+            builder.append("null");
+        }else{
+            builder.append(getEhcacheSessionDao().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[RedisSessionDao](");
+        if(getRedisSessionDao() == null){
+            builder.append("null");
+        }else{
+            builder.append(getRedisSessionDao().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[JdbcRealm](");
+        if(getJdbcRealm() == null){
+            builder.append("null");
+        }else{
+            builder.append(getJdbcRealm().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[RemoteRealm](");
+        if(getRemoteRealm() == null){
+            builder.append("null");
+        }else{
+            builder.append(getRemoteRealm().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[JdbcSessionDao](");
+        if(getJdbcSessionDao() == null){
+            builder.append("null");
+        }else{
+            builder.append(getJdbcSessionDao().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[RemoteSessionDao](");
+        if(getRemoteSessionDao() == null){
+            builder.append("null");
+        }else{
+            builder.append(getRemoteSessionDao().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[JdbcRealmAdaptor](");
+        if(getJdbcRealmAdaptor() == null){
+            builder.append("null");
+        }else{
+            builder.append(getJdbcRealmAdaptor().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[RemoteRealmAdaptor](");
+        if(getRemoteRealmAdaptor() == null){
+            builder.append("null");
+        }else{
+            builder.append(getRemoteRealmAdaptor().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
     
 }

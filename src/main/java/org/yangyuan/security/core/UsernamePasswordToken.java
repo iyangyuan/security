@@ -33,4 +33,24 @@ public class UsernamePasswordToken implements SecurityToken{
     public boolean isRemember() {
         return remember;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[username](");
+        builder.append(getUsername());
+        builder.append(")\n");
+        
+        builder.append("[passwrod](");
+        builder.append(getPasswrod());
+        builder.append(")\n");
+        
+        builder.append("[remember](");
+        builder.append(isRemember());
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
+    
 }

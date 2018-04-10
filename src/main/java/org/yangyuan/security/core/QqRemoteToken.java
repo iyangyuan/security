@@ -14,4 +14,10 @@ public class QqRemoteToken extends RemoteToken{
     public int getPlanform() {
         return 1;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+    
 }

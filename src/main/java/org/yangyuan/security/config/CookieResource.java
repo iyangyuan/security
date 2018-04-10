@@ -132,4 +132,35 @@ public class CookieResource {
         }
     }
     
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[name](");
+        builder.append(getName());
+        builder.append(")\n");
+        
+        builder.append("[domain](");
+        builder.append(getDomain());
+        builder.append(")\n");
+        
+        builder.append("[path](");
+        builder.append(getPath());
+        builder.append(")\n");
+        
+        builder.append("[httpOnly](");
+        builder.append(isHttpOnly());
+        builder.append(")\n");
+        
+        builder.append("[maxAge](");
+        builder.append(getMaxAge());
+        builder.append(")\n");
+        
+        builder.append("[secure](");
+        builder.append(isSecure());
+        builder.append(")\n");
+        
+        return new String(builder);
+    }
+    
 }

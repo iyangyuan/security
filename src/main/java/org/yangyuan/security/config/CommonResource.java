@@ -48,4 +48,22 @@ public class CommonResource {
             return new CommonResource(this);
         }
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(128);
+        
+        builder.append("[RedisResourceFactory](");
+        
+        if(getRedisResourceFactory() == null){
+            builder.append("null");
+        }else {
+            builder.append(getRedisResourceFactory().getClass().getName());
+        }
+        
+        builder.append(")");
+        
+        return new String(builder);
+    }
+    
 }

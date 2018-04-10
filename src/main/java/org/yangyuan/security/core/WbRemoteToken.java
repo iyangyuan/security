@@ -15,4 +15,9 @@ public class WbRemoteToken extends RemoteToken{
         return 3;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+    
 }
