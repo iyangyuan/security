@@ -7,7 +7,7 @@ package org.yangyuan.security.core.common;
  * @param <T> 主题承载session key类型
  * @param <E> 主题承载session value类型
  */
-public interface Subject<T, E> {
+public interface Subject<T, E> extends SecuritySerializable{
     
     /**
      * 获取当前主题关联的唯一标识

@@ -1,11 +1,8 @@
 package org.yangyuan.security.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,16 +14,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
-import org.yangyuan.security.bean.Role;
 import org.yangyuan.security.config.ResourceManager;
-import org.yangyuan.security.core.DefaultSession;
 import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.common.Subject;
 import org.yangyuan.security.dao.common.CacheSessionDao;
 import org.yangyuan.security.dao.common.StatisticalSessionDao;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
@@ -37,7 +29,6 @@ import redis.clients.jedis.ScanResult;
  * @author yangyuan
  * @date 2017年4月26日
  */
-@SuppressWarnings("unchecked")
 public class RedisSessionDao implements CacheSessionDao<String, Object>, StatisticalSessionDao {
     private static final Log log = LogFactory.getLog(RedisSessionDao.class);
     
@@ -132,24 +123,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
             /**
              * 解析subject数据
              */
-            subjectStr = new String(Base64.decodeBase64(subjectStr), ResourceManager.core().getCharset());
-            JSONObject subjectWrap = JSON.parseObject(subjectStr);
-            String principal = subjectWrap.getString("principal");
-            boolean valid = subjectWrap.getBooleanValue("valid");
-            JSONObject sessionWrap = subjectWrap.getJSONObject("session");
-            Map<String, Object> sessionMap = new HashMap<String, Object>();
-            Set<Entry<String, Object>> entrySet = sessionWrap.entrySet();
-            for(Entry<String, Object> entry : entrySet){
-                sessionMap.put(entry.getKey(), entry.getValue());
-            }
-            String permission = (String) sessionMap.get(DefaultSession.SESSION_ROLES);
-            if(StringUtils.isBlank(permission)){
-                sessionMap.put(DefaultSession.SESSION_ROLES, new ArrayList<Role>());
-            }else{
-                sessionMap.put(DefaultSession.SESSION_ROLES, Role.parseRole(permission));
-            }
-            DefaultSession session = new DefaultSession();
-            session.fillMap(sessionMap);
+            subject = DefaultSubject.parse(Base64.decodeBase64(subjectStr));
             
             /**
              * 刷新session
@@ -159,9 +133,9 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
             /**
              * 统计
              */
-            online(principal, redis);
+            online(subject.getPrincipal(), redis);
             
-            return DefaultSubject.getInstance(principal, valid, session);
+            return subject;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -181,20 +155,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
             /**
              * 序列化subject对象
              */
-            Map<String, Object> subjectMap = new HashMap<String, Object>();
-            subjectMap.put("principal", subject.getPrincipal());
-            subjectMap.put("valid", subject.isValid());
-            Map<String, Object> sessionMap = ((DefaultSession) subject.getSession()).toMap();
-            List<Role> roles = (List<Role>)sessionMap.get(DefaultSession.SESSION_ROLES);
-            if(roles.size() == 0){
-                sessionMap.put(DefaultSession.SESSION_ROLES, "");
-            }else{
-                sessionMap.put(DefaultSession.SESSION_ROLES, Role.toPermission(roles));
-            }
-            subjectMap.put("session", sessionMap);
-            
-            String subjectStr = JSON.toJSONString(subjectMap);
-            subjectStr = Base64.encodeBase64String(subjectStr.getBytes(ResourceManager.core().getCharset()));
+            String subjectStr = Base64.encodeBase64String(subject.getBytes());
             
             /**
              * 持久化session

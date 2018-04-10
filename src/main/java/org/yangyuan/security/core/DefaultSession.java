@@ -1,11 +1,19 @@
 package org.yangyuan.security.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+import org.yangyuan.security.bean.Role;
+import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.Session;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 默认会话实现
@@ -23,6 +31,9 @@ public class DefaultSession implements Session<String, Object>{
      */
     public static final String SESSION_ROLES = "_roles";
     
+    /**
+     * 会话数据容器
+     */
     private Map<String, Object> container = new HashMap<String, Object>();
     
     @Override
@@ -35,12 +46,48 @@ public class DefaultSession implements Session<String, Object>{
         return container.put(key, value);
     }
     
-    public Map<String, Object> toMap(){
-        return simpleCopy(this.container);
+    @SuppressWarnings("unchecked")
+    @Override
+    public byte[] getBytes() {
+        try {
+            Map<String, Object> map = simpleCopy(this.container);
+            List<Role> roles = (List<Role>) this.container.get(SESSION_ROLES);
+            map.put(SESSION_ROLES, "");
+            if(roles.size() > 0){
+                map.put(SESSION_ROLES, Role.toPermission(roles));
+            }
+            
+            String json = JSON.toJSONString(map);
+            return json.getBytes(ResourceManager.core().getCharset());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
-    public void fillMap(Map<String, Object> map){
-        this.container = simpleCopy(map);
+    /**
+     * 反序列化
+     * @param bytes
+     * @return
+     */
+    public static DefaultSession parse(byte[] bytes){
+        try {
+            DefaultSession session = new DefaultSession();
+            String json = new String(bytes, ResourceManager.core().getCharset());
+            JSONObject jsonObject = JSON.parseObject(json);
+            Set<Entry<String, Object>> entrySet = jsonObject.entrySet();
+            for(Entry<String, Object> entry : entrySet){
+                session.container.put(entry.getKey(), entry.getValue());
+            }
+            String roles = (String) session.container.get(SESSION_ROLES);
+            session.container.put(SESSION_ROLES, new ArrayList<Role>());
+            if(StringUtils.isNotBlank(roles)){
+                session.container.put(SESSION_ROLES, Role.parseRole(roles));
+            }
+            
+            return session;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
     private Map<String, Object> simpleCopy(Map<String, Object> map){
@@ -52,4 +99,5 @@ public class DefaultSession implements Session<String, Object>{
         
         return _map;
     }
+    
 }

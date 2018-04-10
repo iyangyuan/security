@@ -1,5 +1,9 @@
 package org.yangyuan.security.core;
 
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,12 +12,17 @@ import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.Session;
 import org.yangyuan.security.core.common.Subject;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 默认安全认证主题实现(不可变对象)
  * @author yangyuan
  * @date 2017年4月26日
  */
 public final class DefaultSubject implements Subject<String, Object>{
+    private static final String PRINCIPAL_SERIALIZABLE_NAME = "principal";
+    private static final String VALID_SERIALIZABLE_NAME = "valid";
     
     private final Session<String, Object> session;
     private final String principal;
@@ -123,6 +132,56 @@ public final class DefaultSubject implements Subject<String, Object>{
      */
     public static DefaultSubject getInstance(String principal, boolean valid, Session<String, Object> session){
         return new DefaultSubject(principal, valid, session);
+    }
+
+    @Override
+    public byte[] getBytes() {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put(PRINCIPAL_SERIALIZABLE_NAME, principal);
+            map.put(VALID_SERIALIZABLE_NAME, valid);
+            String json = JSON.toJSONString(map);
+            
+            byte[] subjectBytes = json.getBytes(ResourceManager.core().getCharset());
+            byte[] sessionBytes = getSession().getBytes();
+            byte[] bytes = new byte[subjectBytes.length + sessionBytes.length + 8];
+            ByteBuffer buffer = ByteBuffer.wrap(bytes);
+            buffer.clear();
+            buffer.putInt(subjectBytes.length);
+            buffer.put(subjectBytes);
+            buffer.putInt(sessionBytes.length);
+            buffer.put(sessionBytes);
+            
+            return bytes;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * 反序列化
+     * @param bytes 原始字节数组
+     * @return
+     */
+    public static DefaultSubject parse(byte[] bytes){
+        try {
+            ByteBuffer buffer = ByteBuffer.wrap(bytes);
+            buffer.clear();
+            
+            int length = buffer.getInt();
+            byte[] subjectBytes = new byte[length];
+            buffer.get(subjectBytes);
+            JSONObject subjectJson = JSON.parseObject(new String(subjectBytes, ResourceManager.core().getCharset()));
+            
+            length = buffer.getInt();
+            byte[] sessionBytes = new byte[length];
+            buffer.get(sessionBytes);
+            DefaultSession session = DefaultSession.parse(sessionBytes);
+            
+            return DefaultSubject.getInstance(subjectJson.getString(PRINCIPAL_SERIALIZABLE_NAME), subjectJson.getBooleanValue(VALID_SERIALIZABLE_NAME), session);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
 }
