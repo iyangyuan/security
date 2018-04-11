@@ -138,8 +138,8 @@ public final class DefaultSubject implements Subject<String, Object>{
     public byte[] getBytes() {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put(PRINCIPAL_SERIALIZABLE_NAME, principal);
-            map.put(VALID_SERIALIZABLE_NAME, valid);
+            map.put(PRINCIPAL_SERIALIZABLE_NAME, getPrincipal());
+            map.put(VALID_SERIALIZABLE_NAME, isValid());
             String json = JSON.toJSONString(map);
             
             byte[] subjectBytes = json.getBytes(ResourceManager.core().getCharset());
@@ -182,6 +182,27 @@ public final class DefaultSubject implements Subject<String, Object>{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("#Subject\n");
+        
+        builder.append("[principal](");
+        builder.append(getPrincipal());
+        builder.append(")\n");
+        
+        builder.append("[valid](");
+        builder.append(isValid());
+        builder.append(")\n");
+        
+        builder.append("#Session\n");
+        
+        builder.append(getSession().toString());
+        
+        return new String(builder);
     }
     
 }

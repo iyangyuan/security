@@ -100,4 +100,13 @@ public class DefaultSession implements Session<String, Object>{
         return _map;
     }
     
+    @Override
+    public String toString() {
+        try {
+            return new String(getBytes(), ResourceManager.core().getCharset());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
 }
