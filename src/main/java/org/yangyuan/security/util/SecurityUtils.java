@@ -23,6 +23,31 @@ import org.yangyuan.security.dao.common.StatisticalSessionDao;
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class SecurityUtils {
+    
+    /**
+     * 判断用户是否为匿名状态
+     * 
+     * @return 
+     *      <b>true</b> 匿名状态
+     *      <br>
+     *      <b>false</b> 登陆状态
+     */
+    public static boolean isAnonymous(){
+        return !isAuthenticated();
+    }
+    
+    /**
+     * 判断用户是否为登陆状态
+     * 
+     * @return 
+     *      <b>true</b> 已登陆
+     *      <br>
+     *      <b>false</b> 未登陆
+     */
+    public static boolean isAuthenticated(){
+        return getUnionid() != null;
+    }
+    
     /**
      * 获取当前上下文中的主题
      * @return 如果用户未登录，返回null
@@ -68,7 +93,7 @@ public class SecurityUtils {
      * 获取当前上下文中关联的用户全局唯一id
      * @return 如果用户未登录，返回null
      */
-    public static String  getUnionid(){
+    public static String getUnionid(){
         Session<String, Object> session = SecurityUtils.getSession();
         
         if(session == null){
@@ -138,6 +163,59 @@ public class SecurityUtils {
             CacheManager<String, Object> cacheManager = ResourceManager.core().getCacheManager();
             cacheManager.invalid(subject);
         }
+    }
+    
+    /**
+     * 判断当前上下文中关联的用户是否拥有指定的角色
+     * @param roles 指定角色，可以为一个或多个，多个角色之间为逻辑与(and)关系
+     * @return
+     *      <b>true</b> 用户拥有所有指定的角色
+     *      <br>
+     *      <b>false</b> 其他情况
+     */
+    public static boolean hasRoles(Role... roles){
+        List<Role> hasRoles = getRoles();
+        if(hasRoles == null || hasRoles.size() == 0){
+            return false;
+        }
+        boolean match = false;
+        for(Role role : roles){
+            for(Role hasRole : hasRoles){
+                match = role.matches(hasRole);
+                if(match){
+                    break;
+                }
+            }
+            if(!match){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 判断当前上下文中关联的用户是否拥有指定的角色
+     * @param roles 指定角色，可以为一个或多个，多个角色之间为逻辑或(or)关系
+     * @return
+     *      <b>true</b> 用户至少拥有一个指定的角色
+     *      <br>
+     *      <b>false</b> 其他情况
+     */
+    public static boolean hasAnyRole(Role... roles){
+        List<Role> hasRoles = getRoles();
+        if(hasRoles == null || hasRoles.size() == 0){
+            return false;
+        }
+        for(Role role : roles){
+            for(Role hasRole : hasRoles){
+                if(role.matches(hasRole)){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
     
     /**
