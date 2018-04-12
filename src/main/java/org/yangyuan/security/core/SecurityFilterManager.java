@@ -2,6 +2,7 @@ package org.yangyuan.security.core;
 
 import org.yangyuan.security.filter.AnonSecurityFilter;
 import org.yangyuan.security.filter.AuthcSecurityFilter;
+import org.yangyuan.security.filter.BasicHttpAuthenticationSecurityFilter;
 import org.yangyuan.security.filter.RoleSecurityFilter;
 import org.yangyuan.security.filter.common.SecurityFilter;
 
@@ -20,8 +21,10 @@ public class SecurityFilterManager {
         AnonSecurityFilter anonSecurityFilter = new AnonSecurityFilter();  //匿名过滤器
         AuthcSecurityFilter authcSecurityFilter = new AuthcSecurityFilter();  //基础认证过滤器
         RoleSecurityFilter roleSecurityFilter = new RoleSecurityFilter();  //角色认证过滤器
+        BasicHttpAuthenticationSecurityFilter basicHttpAuthenticationSecurityFilter = new BasicHttpAuthenticationSecurityFilter();  //http basic authentication认证过滤器
         anonSecurityFilter.setNext(authcSecurityFilter);
         authcSecurityFilter.setNext(roleSecurityFilter);
+        roleSecurityFilter.setNext(basicHttpAuthenticationSecurityFilter);
         
         chainPointer = anonSecurityFilter;
     }

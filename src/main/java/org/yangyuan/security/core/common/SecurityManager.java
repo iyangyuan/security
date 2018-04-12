@@ -1,5 +1,6 @@
 package org.yangyuan.security.core.common;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.yangyuan.security.bean.User;
@@ -29,6 +30,7 @@ public interface SecurityManager {
      * 统一认证，这个方法可以说是@Security注解的实现
      * <p>如果正常执行，说明认证通过；认证失败会抛出对应的运行时异常</p>
      * @param permission 认证表达式
+     * @param request http请求对象
      */
-    void auth(String permission);
+    void auth(String permission, HttpServletRequest request);
 }

@@ -1,5 +1,7 @@
 package org.yangyuan.security.filter;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.filter.common.AbstractSecurityFilter;
@@ -14,7 +16,7 @@ public class AnonSecurityFilter extends AbstractSecurityFilter{
     private static final String FILETER_NAME = "anon";
     
     @Override
-    public void doFilter(String permission) {
+    public void doFilter(String permission, HttpServletRequest request) {
         if(StringUtils.isBlank(permission)){
             throw new SecurityFilterErrorException("permission is blank");
         }
@@ -23,7 +25,7 @@ public class AnonSecurityFilter extends AbstractSecurityFilter{
             return;
         }
         
-        next(permission);
+        next(permission, request);
     }
     
 }

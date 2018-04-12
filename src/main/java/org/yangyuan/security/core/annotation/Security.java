@@ -25,6 +25,12 @@ import java.lang.annotation.Target;
  *      <p>roles中的角色可以配置多个，以英文逗号分隔，为并列关系，即逻辑“或”</p>
  *      <p>本示例表达式代表的含义为：任何拥有[admin角色]或者[拥有vip角色并且级别为9]或者[拥有vip角色并且级别小于5]的用户，均可通过认证，满足任何一个或多个条件均可</p>
  *  </li>
+ *  <li>
+ *      <p><b>HTTP BASIC认证配置(basic)：</b>@Security(permission = "basic[username1:password1, username2:password2]")</p>
+ *      <p>HTTP基础认证实现</p>
+ *      <p>以英文冒号分隔用户名和密码</p>
+ *      <p>支持配置多用户，以英文逗号分隔</p>
+ *  </li>
  * </ul>
  * @author yangyuan
  * @date 2017年4月26日

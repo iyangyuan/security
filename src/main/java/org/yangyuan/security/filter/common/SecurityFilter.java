@@ -1,5 +1,7 @@
 package org.yangyuan.security.filter.common;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 安全过滤器定义
  * @author yangyuan
@@ -23,7 +25,8 @@ public interface SecurityFilter {
      * 认证
      * <p>正常执行，认证通过；认证失败会抛出对应的异常</p>
      * @param permission 认证表达式
+     * @param request http请求对象
      */
-    void doFilter(String permission);
+    void doFilter(String permission, HttpServletRequest request);
     
 }

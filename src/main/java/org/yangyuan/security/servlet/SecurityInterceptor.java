@@ -10,7 +10,9 @@ import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.SessionManager;
 import org.yangyuan.security.core.annotation.Security;
 import org.yangyuan.security.exception.SecurityFilterAuthException;
+import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
+import org.yangyuan.security.filter.BasicHttpAuthenticationSecurityFilter;
 
 /**
  * spring mvc 拦截器，实现认证拦截
@@ -57,7 +59,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter{
         }
         String permission = securityAnnotation.permission();
         try {
-            ResourceManager.core().getSecurityManager().auth(permission);
+            ResourceManager.core().getSecurityManager().auth(permission, request);
         } catch (SecurityFilterAuthException e) {
             ResourceManager.core()
                             .getSecurityAuthHandler()
@@ -67,6 +69,9 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter{
             ResourceManager.core()
                             .getSecurityAuthHandler()
                             .onForbiddenFail(request, response, (HandlerMethod) handler);
+            return false;
+        } catch (SecurityFilterBasicAuthException e) {
+            BasicHttpAuthenticationSecurityFilter.sendChallenge(response);
             return false;
         }
         

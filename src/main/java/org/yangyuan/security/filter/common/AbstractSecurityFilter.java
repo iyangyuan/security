@@ -1,5 +1,7 @@
 package org.yangyuan.security.filter.common;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 
 /**
@@ -21,9 +23,9 @@ public abstract class AbstractSecurityFilter implements SecurityFilter{
         this.filter = filter;
     }
     
-    public void next(String permission) {
+    public void next(String permission, HttpServletRequest request) {
         if(getNext() != null){
-            getNext().doFilter(permission);
+            getNext().doFilter(permission, request);
             return;
         }
         

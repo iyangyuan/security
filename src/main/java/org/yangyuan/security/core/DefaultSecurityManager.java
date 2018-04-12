@@ -1,6 +1,7 @@
 package org.yangyuan.security.core;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.yangyuan.security.bean.User;
@@ -100,8 +101,8 @@ public class DefaultSecurityManager implements SecurityManager{
     }
     
     @Override
-    public void auth(String permission) {
-        SecurityFilterManager.getFilterChain().doFilter(permission);
+    public void auth(String permission, HttpServletRequest request) {
+        SecurityFilterManager.getFilterChain().doFilter(permission, request);
     }
     
 }
