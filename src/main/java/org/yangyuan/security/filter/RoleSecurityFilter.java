@@ -46,17 +46,9 @@ public class RoleSecurityFilter extends AbstractSecurityFilter{
             /**
              * 角色验证
              */
-            List<Role> userRoles = (List<Role>) SecurityUtils.getRoles();
-            if(userRoles == null || userRoles.size() == 0){
-                throw new SecurityFilterForbiddenException();
-            }
-            List<Role> permissionRoles = Role.parseRole(permission);
-            for(Role permissionRole : permissionRoles){
-                for(Role userRole : userRoles){
-                    if(permissionRole.matches(userRole)){
-                        return;
-                    }
-                }
+            List<Role> roles = Role.parseRole(permission);
+            if(SecurityUtils.hasAnyRole(roles)){
+                return;  //认证通过
             }
             
             /**
