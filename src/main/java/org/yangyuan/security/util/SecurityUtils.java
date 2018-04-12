@@ -196,6 +196,27 @@ public class SecurityUtils {
     
     /**
      * 判断当前上下文中关联的用户是否拥有指定的角色
+     * @param roles 指定角色，可以为一个或多个，多个角色之间为逻辑与(and)关系
+     * @return
+     *      <b>true</b> 用户拥有所有指定的角色
+     *      <br>
+     *      <b>false</b> 其他情况
+     */
+    public static boolean hasRoles(List<Role> roles){
+        if(roles == null || roles.size() == 0){
+            return false;
+        }
+        
+        Role[] _roles = new Role[roles.size()];
+        for(int i = 0; i < _roles.length; i++){
+            _roles[i] = roles.get(i);
+        }
+        
+        return hasRoles(_roles);
+    }
+    
+    /**
+     * 判断当前上下文中关联的用户是否拥有指定的角色
      * @param roles 指定角色，可以为一个或多个，多个角色之间为逻辑或(or)关系
      * @return
      *      <b>true</b> 用户至少拥有一个指定的角色
@@ -216,6 +237,27 @@ public class SecurityUtils {
         }
         
         return false;
+    }
+    
+    /**
+     * 判断当前上下文中关联的用户是否拥有指定的角色
+     * @param roles 指定角色，可以为一个或多个，多个角色之间为逻辑或(or)关系
+     * @return
+     *      <b>true</b> 用户至少拥有一个指定的角色
+     *      <br>
+     *      <b>false</b> 其他情况
+     */
+    public static boolean hasAnyRole(List<Role> roles){
+        if(roles == null || roles.size() == 0){
+            return false;
+        }
+        
+        Role[] _roles = new Role[roles.size()];
+        for(int i = 0; i < _roles.length; i++){
+            _roles[i] = roles.get(i);
+        }
+        
+        return hasAnyRole(_roles);
     }
     
     /**
