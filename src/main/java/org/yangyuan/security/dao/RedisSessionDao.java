@@ -11,9 +11,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.stereotype.Component;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.common.Subject;
@@ -44,7 +41,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
     /**
      * 启动垃圾回收线程
      */
-    private static void gcStart(){
+    public static void gcStart(){
         if(!ResourceManager.session().isGcOpen()){
             return;
         }
@@ -93,7 +90,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
     /**
      * 停止垃圾回收线程
      */
-    private static void gcStop(){
+    public static void gcStop(){
         try {
             if(GC_EXECUTOR == null){
                 return;
@@ -342,19 +339,6 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
      */
     private static String buildeSetKey(String partition){
         return "security:session:set:".concat(partition);
-    }
-    
-    /**
-     * 应用关闭监听器
-     * @author yangyuan
-     * @date 2018年3月30日
-     */
-    @Component
-    private static class RedisSessionDaoShutdownListener implements ApplicationListener<ContextClosedEvent> {
-        @Override
-        public void onApplicationEvent(ContextClosedEvent event) {
-            gcStop();
-        }
     }
     
 }

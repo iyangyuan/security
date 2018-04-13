@@ -1,9 +1,5 @@
 package org.yangyuan.security.config;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.PrincipalFactory;
 import org.yangyuan.security.core.common.SecurityAuthHandler;
@@ -14,6 +10,7 @@ import org.yangyuan.security.dao.common.RedisResourceFactory;
 import org.yangyuan.security.realm.common.JdbcRealmAdaptor;
 import org.yangyuan.security.realm.common.Realm;
 import org.yangyuan.security.realm.common.RemoteRealmAdaptor;
+import org.yangyuan.security.spring.SecuritySpringHook;
 import org.yangyuan.security.util.SecurityConfigUtils;
 
 /**
@@ -166,39 +163,9 @@ public class ResourceManager {
      */
     @SuppressWarnings("unchecked")
     private static <T> T getInstanceFromSpring(String name) {
-        return (T) SpringIocHook.getBean(name);
+        return (T) SecuritySpringHook.getBean(name);
     }
     
-    /**
-     * spring ioc 钩子
-     * @author yangyuan
-     * @date 2018年3月31日
-     */
-    @Component
-    private static class SpringIocHook implements ApplicationContextAware {
-        private static ApplicationContext applicationContext;
-        
-        @Override
-        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-            SpringIocHook.applicationContext = applicationContext;
-        }
-        
-        /**
-         * 根据bean名称获取spring ioc 管理的 bean实例
-         * @param name bean名称
-         * @return bean实例
-         */
-        @SuppressWarnings("unchecked")
-        public static <T> T getBean(String name) {
-            T t = (T) applicationContext.getBean(name);
-            if(t == null){
-                throw new RuntimeException("bean[" + name + "] not found");
-            }
-            return t;
-        }
-        
-    }
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(1024);
