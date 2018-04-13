@@ -5,18 +5,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.BasicAuth;
+import org.yangyuan.security.core.annotation.SecurityFilterComponent;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
-import org.yangyuan.security.filter.common.AbstractSecurityFilter;
+import org.yangyuan.security.filter.common.SecurityFilter;
 
 /**
  * http basic authentication认证实现
  * @author yangyuan
  * @date 2018年4月12日
  */
-public class BasicHttpAuthenticationSecurityFilter extends AbstractSecurityFilter{
+@SecurityFilterComponent(value = "index/4")
+public class BasicHttpAuthenticationSecurityFilter implements SecurityFilter{
     
-    private static final String FILETER_NAME = "basic[";
+    private static final String FILETER_NAME = "basic";
     
     /**
      * HTTP basic authentication header
@@ -34,44 +36,45 @@ public class BasicHttpAuthenticationSecurityFilter extends AbstractSecurityFilte
     protected static final String AUTHENTICATE_SCHEME = HttpServletRequest.BASIC_AUTH;
     
     @Override
-    public void doFilter(String permission, HttpServletRequest request) {
+    public boolean approve(String permission) {
         if(StringUtils.isBlank(permission)){
             throw new SecurityFilterErrorException("permission is blank");
         }
         
-        if(permission.toLowerCase().startsWith(FILETER_NAME)){
-            /**
-             * 获取客户端授权凭证
-             */
-            String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
-            if(StringUtils.isBlank(authorizationHeader)){
-                throw new SecurityFilterBasicAuthException();
-            }
-            String[] authorizations = authorizationHeader.split(" ");
-            if(authorizations.length < 2){
-                throw new SecurityFilterBasicAuthException();
-            }
-            String authorization = authorizations[1];
-            
-            /**
-             * 解析表达式
-             */
-            BasicAuth basicAuth = BasicAuth.parseBasicAuth(permission);
-            
-            /**
-             * 认证成功
-             */
-            if(basicAuth.contains(authorization)){
-                return;
-            }
-            
-            /**
-             * 认证失败
-             */
+        return permission.toLowerCase().startsWith(FILETER_NAME);
+    }
+
+    @Override
+    public void doFilter(String permission, HttpServletRequest request) {
+        /**
+         * 获取客户端授权凭证
+         */
+        String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
+        if(StringUtils.isBlank(authorizationHeader)){
             throw new SecurityFilterBasicAuthException();
         }
+        String[] authorizations = authorizationHeader.split(" ");
+        if(authorizations.length < 2){
+            throw new SecurityFilterBasicAuthException();
+        }
+        String authorization = authorizations[1];
         
-        next(permission, request);
+        /**
+         * 解析表达式
+         */
+        BasicAuth basicAuth = BasicAuth.parseBasicAuth(permission);
+        
+        /**
+         * 认证成功
+         */
+        if(basicAuth.contains(authorization)){
+            return;
+        }
+        
+        /**
+         * 认证失败
+         */
+        throw new SecurityFilterBasicAuthException();
     }
     
     /**

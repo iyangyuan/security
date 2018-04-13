@@ -10,20 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 public interface SecurityFilter {
     
     /**
-     * 获取过滤器链下一个节点
+     * 认证试探
+     * @param permission 认证表达式
      * @return
+     *      <b>true</b> 此过滤器能够处理指定的认证表达式
+     *      <br>
+     *      <b>false</b> 此过滤器不能够处理指定的认证表达式
      */
-    SecurityFilter getNext();
-    
-    /**
-     * 设置过滤器链下一个节点
-     * @param filter
-     */
-    void setNext(SecurityFilter filter);
+    boolean approve(String permission);
     
     /**
      * 认证
-     * <p>正常执行，认证通过；认证失败会抛出对应的异常</p>
+     * <p>正常执行，认证通过</p>
+     * <p>认证失败会抛出对应的异常，通过异常机制实现认证交互</p>
      * @param permission 认证表达式
      * @param request http请求对象
      */

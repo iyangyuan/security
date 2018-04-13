@@ -1,10 +1,19 @@
 package org.yangyuan.security.core;
 
-import org.yangyuan.security.filter.AnonSecurityFilter;
-import org.yangyuan.security.filter.AuthcSecurityFilter;
-import org.yangyuan.security.filter.BasicHttpAuthenticationSecurityFilter;
-import org.yangyuan.security.filter.RoleSecurityFilter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.filter.common.SecurityFilter;
+import org.yangyuan.security.spring.SecuritySpringHook;
+import org.yangyuan.security.util.SecuritySort;
 
 /**
  * 安全过滤器管理器
@@ -12,48 +21,85 @@ import org.yangyuan.security.filter.common.SecurityFilter;
  * @date 2017年4月26日
  */
 public class SecurityFilterManager {
-    private static final SecurityFilter chainPointer;
+    /**
+     * 过滤器链
+     */
+    private static final List<SecurityFilter> FILTERS_CHAIN;
     
     static {
         /**
-         * 初始化安全过滤器调用链
+         * 加载过滤器
          */
-        AnonSecurityFilter anonSecurityFilter = new AnonSecurityFilter();  //匿名过滤器
-        AuthcSecurityFilter authcSecurityFilter = new AuthcSecurityFilter();  //基础认证过滤器
-        RoleSecurityFilter roleSecurityFilter = new RoleSecurityFilter();  //角色认证过滤器
-        BasicHttpAuthenticationSecurityFilter basicHttpAuthenticationSecurityFilter = new BasicHttpAuthenticationSecurityFilter();  //http basic authentication认证过滤器
-        anonSecurityFilter.setNext(authcSecurityFilter);
-        authcSecurityFilter.setNext(roleSecurityFilter);
-        roleSecurityFilter.setNext(basicHttpAuthenticationSecurityFilter);
-        
-        chainPointer = anonSecurityFilter;
+        Map<String, SecurityFilter> filters = SecuritySpringHook.getBeansOfType(SecurityFilter.class);
+        Set<Entry<String, SecurityFilter>> entrySet = filters.entrySet();
+        Iterator<Entry<String, SecurityFilter>> iterator = entrySet.iterator();
+        Entry<String, SecurityFilter> entry;
+        List<SecuritySort> sorts = new ArrayList<SecuritySort>();
+        FILTERS_CHAIN = new ArrayList<SecurityFilter>();
+        while(iterator.hasNext()){  //获取所有过滤器
+            entry = iterator.next();
+            sorts.add(new SecuritySort(getIndex(entry.getKey()), entry.getValue(), SecuritySort.ORDER_ASC));
+        }
+        Collections.sort(sorts);  //排序
+        SecurityFilter filter;
+        for(SecuritySort sort : sorts){  //组装过滤器链
+            filter = sort.getValue();
+            FILTERS_CHAIN.add(filter);
+        }
     }
     
     /**
-     * 获取安全过滤器调用链
+     * 获取过滤器排序序号
+     * @param name 过滤器名称
+     * @return 排序序号，如果过滤器名称中未指定顺序，默认为0
+     */
+    private static int getIndex(String name){
+        if(name.indexOf("/") < 0){
+            return Integer.MAX_VALUE;
+        }
+        String[] fragments = name.split("/");
+        if(fragments.length < 2){
+            return Integer.MAX_VALUE;
+        }
+        
+        return Integer.parseInt(fragments[1]);
+    }
+    
+    /**
+     * 调用过滤器链
+     * @param permission 认证表达式
+     * @param request http请求对象
+     */
+    public static void doFilter(String permission, HttpServletRequest request){
+        for(SecurityFilter filter : FILTERS_CHAIN){
+            if(filter.approve(permission)){
+                filter.doFilter(permission, request);
+                return;
+            }
+        }
+        
+        throw new SecurityFilterErrorException("permission express: " + permission + ", none security filter can execute");
+    }
+    
+    /**
+     * 过滤器链视图
      * @return
      */
-    public static SecurityFilter getFilterChain(){
-        return chainPointer;
+    public static String view(){
+        StringBuilder builder = new StringBuilder(256);
+        builder.append("[root]");
+        for(SecurityFilter filter : FILTERS_CHAIN){
+            builder.append("->[");
+            builder.append(filter.getClass().getName());
+            builder.append("]");
+        }
+        
+        return new String(builder);
     }
     
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(256);
-        SecurityFilter filter = getFilterChain();
-        if(filter != null){
-            builder.append("[");
-            builder.append(filter.getClass().getName());
-            builder.append("]");
-            while(filter.getNext() != null){
-                filter = filter.getNext();
-                builder.append("->[");
-                builder.append(filter.getClass().getName());
-                builder.append("]");
-            }
-        }
-        
-        return new String(builder);
+        return view();
     }
     
 }

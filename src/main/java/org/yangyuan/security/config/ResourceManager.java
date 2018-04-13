@@ -1,5 +1,8 @@
 package org.yangyuan.security.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.yangyuan.security.core.SecurityFilterManager;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.PrincipalFactory;
 import org.yangyuan.security.core.common.SecurityAuthHandler;
@@ -19,6 +22,9 @@ import org.yangyuan.security.util.SecurityConfigUtils;
  * @date 2018年3月30日
  */
 public class ResourceManager {
+    
+    private static final Log log = LogFactory.getLog(ResourceManager.class);
+    
     private static CommonResource commonResource;
     private static CookieResource cookieResource;
     private static CoreResource coreResource;
@@ -86,6 +92,8 @@ public class ResourceManager {
                     .jdbcRealmAdaptor(jdbcRealmAdaptor)
                     .remoteRealmAdaptor(remoteRealmAdaptor)
                     .build();
+        
+        log.debug("Security过滤器视图\n" + SecurityFilterManager.view());
     }
     
     /**

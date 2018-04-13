@@ -102,7 +102,7 @@ public class DefaultSecurityManager implements SecurityManager{
     
     @Override
     public void auth(String permission, HttpServletRequest request) {
-        SecurityFilterManager.getFilterChain().doFilter(permission, request);
+        SecurityFilterManager.doFilter(permission, request);
     }
     
 }

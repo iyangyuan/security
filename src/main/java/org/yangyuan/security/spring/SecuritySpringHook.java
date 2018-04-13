@@ -1,5 +1,7 @@
 package org.yangyuan.security.spring;
 
+import java.util.Map;
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -31,7 +33,16 @@ public class SecuritySpringHook implements ApplicationContextAware, ApplicationL
     }
     
     /**
-     * 根据bean名称获取spring ioc 管理的 bean实例
+     * 根据bean类型获取spring ioc管理的bean实例
+     * @param type bean类型，class或interface
+     * @return bean实例集合
+     */
+    public static <T> Map<String, T> getBeansOfType(Class<T> type){
+        return applicationContext.getBeansOfType(type);
+    }
+    
+    /**
+     * 根据bean名称获取spring ioc管理的bean实例
      * @param name bean名称
      * @return bean实例
      */
