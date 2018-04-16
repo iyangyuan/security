@@ -15,5 +15,18 @@ public class SecurityFilterForbiddenException extends RuntimeException{
     public SecurityFilterForbiddenException(String s) {
         super(s);
     }
+
+    public SecurityFilterForbiddenException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public SecurityFilterForbiddenException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SecurityFilterForbiddenException(Throwable cause) {
+        super(cause);
+    }
     
 }

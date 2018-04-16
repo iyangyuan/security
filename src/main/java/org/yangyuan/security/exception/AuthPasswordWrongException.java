@@ -15,5 +15,18 @@ public class AuthPasswordWrongException extends RuntimeException{
     public AuthPasswordWrongException(String s) {
         super(s);
     }
+
+    public AuthPasswordWrongException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public AuthPasswordWrongException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AuthPasswordWrongException(Throwable cause) {
+        super(cause);
+    }
     
 }

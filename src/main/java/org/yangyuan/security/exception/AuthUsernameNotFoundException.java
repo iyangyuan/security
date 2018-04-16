@@ -15,5 +15,18 @@ public class AuthUsernameNotFoundException extends RuntimeException{
     public AuthUsernameNotFoundException(String s) {
         super(s);
     }
+
+    public AuthUsernameNotFoundException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public AuthUsernameNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AuthUsernameNotFoundException(Throwable cause) {
+        super(cause);
+    }
     
 }

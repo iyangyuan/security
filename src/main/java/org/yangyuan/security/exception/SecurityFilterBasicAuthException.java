@@ -15,5 +15,18 @@ public class SecurityFilterBasicAuthException extends RuntimeException{
     public SecurityFilterBasicAuthException(String s) {
         super(s);
     }
+
+    public SecurityFilterBasicAuthException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public SecurityFilterBasicAuthException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SecurityFilterBasicAuthException(Throwable cause) {
+        super(cause);
+    }
     
 }

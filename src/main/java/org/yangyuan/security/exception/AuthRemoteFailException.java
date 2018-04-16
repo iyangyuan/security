@@ -15,5 +15,17 @@ public class AuthRemoteFailException extends RuntimeException{
     public AuthRemoteFailException(String message) {
         super(message);
     }
-    
+
+    public AuthRemoteFailException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public AuthRemoteFailException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AuthRemoteFailException(Throwable cause) {
+        super(cause);
+    }
 }
