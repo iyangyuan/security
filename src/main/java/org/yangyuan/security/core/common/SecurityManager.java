@@ -27,10 +27,16 @@ public interface SecurityManager {
     void logout(HttpServletResponse response);
     
     /**
-     * 统一认证，这个方法可以说是@Security注解的实现
-     * <p>如果正常执行，说明认证通过；认证失败会抛出对应的运行时异常</p>
+     * 统一认证
+     * <p>此方法是实现@Security注解的入口</p>
      * @param permission 认证表达式
      * @param request http请求对象
+     * @param response http响应对象
+     * @param handler handler chosen handler to execute, for type and/or instance evaluation
+     * @return
+     *        <b>true</b> 认证成功
+     *        <br>
+     *        <b>false</b> 认证失败
      */
-    void auth(String permission, HttpServletRequest request);
+    boolean auth(String permission, HttpServletRequest request, HttpServletResponse response, Object handler);
 }

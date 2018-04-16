@@ -9,10 +9,6 @@ import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.SessionManager;
 import org.yangyuan.security.core.annotation.Security;
-import org.yangyuan.security.exception.SecurityFilterAuthException;
-import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
-import org.yangyuan.security.exception.SecurityFilterForbiddenException;
-import org.yangyuan.security.filter.BasicHttpAuthenticationSecurityFilter;
 
 /**
  * spring mvc 拦截器，实现认证拦截
@@ -51,35 +47,18 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter{
         }
         
         /**
-         * 用户认证
+         * 获取注解
          */
         Security securityAnnotation = ((HandlerMethod) handler).getMethodAnnotation(Security.class);
-        if(securityAnnotation == null){
-            return true;
-        }
-        String permission = securityAnnotation.permission();
-        try {
-            ResourceManager.core().getSecurityManager().auth(permission, request);
-        } catch (SecurityFilterAuthException e) {
-            ResourceManager.core()
-                            .getSecurityAuthHandler()
-                            .onAuthFail(request, response, (HandlerMethod) handler);
-            return false;
-        } catch (SecurityFilterForbiddenException e) {
-            ResourceManager.core()
-                            .getSecurityAuthHandler()
-                            .onForbiddenFail(request, response, (HandlerMethod) handler);
-            return false;
-        } catch (SecurityFilterBasicAuthException e) {
-            BasicHttpAuthenticationSecurityFilter.sendChallenge(response);
-            return false;
+        String permission = null;
+        if(securityAnnotation != null){
+            permission = securityAnnotation.permission();
         }
         
-        ResourceManager.core()
-                        .getSecurityAuthHandler()
-                        .onSuccess(request, response, (HandlerMethod) handler);
-        return true;
-        
+        /**
+         * 用户认证
+         */
+        return ResourceManager.core().getSecurityManager().auth(permission, request, response, handler);
     }
     
 }

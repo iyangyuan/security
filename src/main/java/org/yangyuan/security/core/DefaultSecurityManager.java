@@ -4,11 +4,17 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.method.HandlerMethod;
 import org.yangyuan.security.bean.User;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.SecurityManager;
 import org.yangyuan.security.core.common.SecurityToken;
+import org.yangyuan.security.exception.SecurityFilterAuthException;
+import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
+import org.yangyuan.security.exception.SecurityFilterForbiddenException;
+import org.yangyuan.security.filter.BasicHttpAuthenticationSecurityFilter;
 
 /**
  * 默认安全管理器实现
@@ -101,8 +107,32 @@ public class DefaultSecurityManager implements SecurityManager{
     }
     
     @Override
-    public void auth(String permission, HttpServletRequest request) {
-        SecurityFilterManager.doFilter(permission, request);
+    public boolean auth(String permission, HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if(StringUtils.isBlank(permission)){
+            return true;
+        }
+        
+        try {
+            SecurityFilterManager.doFilter(permission, request);
+        } catch (SecurityFilterAuthException e) {
+            ResourceManager.core()
+                            .getSecurityAuthHandler()
+                            .onAuthFail(request, response, (HandlerMethod) handler);
+            return false;
+        } catch (SecurityFilterForbiddenException e) {
+            ResourceManager.core()
+                            .getSecurityAuthHandler()
+                            .onForbiddenFail(request, response, (HandlerMethod) handler);
+            return false;
+        } catch (SecurityFilterBasicAuthException e) {
+            BasicHttpAuthenticationSecurityFilter.sendChallenge(response);
+            return false;
+        }
+        
+        ResourceManager.core()
+                        .getSecurityAuthHandler()
+                        .onSuccess(request, response, (HandlerMethod) handler);
+        return true;
     }
     
 }
