@@ -21,10 +21,17 @@ public interface SecurityManager {
     User login(SecurityToken token, HttpServletResponse response);
     
     /**
-     * 登出
+     * 登出(当前上下文)
      * @param response http响应对象
      */
     void logout(HttpServletResponse response);
+    
+    /**
+     * 登出(指定主题)
+     * @param response http响应对象
+     * @param subject 主题
+     */
+    void logout(HttpServletResponse response, Subject<String, Object> subject);
     
     /**
      * 统一认证

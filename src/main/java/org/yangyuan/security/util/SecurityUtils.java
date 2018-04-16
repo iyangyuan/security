@@ -270,11 +270,31 @@ public class SecurityUtils {
     }
     
     /**
-     * 登出
+     * 登出(当前上下文)
      * @param response http响应对象
      */
     public static void logout(HttpServletResponse response){
         ResourceManager.core().getSecurityManager().logout(response);
+    }
+    
+    /**
+     * 登出(指定主题)
+     * @param response http响应对象
+     * @param subject 主题
+     */
+    public static void logout(HttpServletResponse response, Subject<String, Object> subject){
+        ResourceManager.core().getSecurityManager().logout(response, subject);
+    }
+    
+    /**
+     * 登出(指定用户)
+     * @param userUnionid 用户唯一标识
+     */
+    public static void logout(String userUnionid){
+        List<Subject<String, Object>> subjects = ResourceManager.dao().getRedisSessionDao().queryUserSubjects(userUnionid);
+        for(Subject<String, Object> subject : subjects){
+            ResourceManager.core().getSecurityManager().logout(null, subject);
+        }
     }
     
     /**

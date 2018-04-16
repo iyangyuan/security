@@ -11,6 +11,7 @@ import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.SecurityManager;
 import org.yangyuan.security.core.common.SecurityToken;
+import org.yangyuan.security.core.common.Subject;
 import org.yangyuan.security.exception.SecurityFilterAuthException;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
@@ -77,7 +78,11 @@ public class DefaultSecurityManager implements SecurityManager{
     @Override
     public void logout(HttpServletResponse response) {
         DefaultSubject subject = (DefaultSubject) SessionManager.getSubject();
-        
+        logout(response, subject);
+    }
+    
+    @Override
+    public void logout(HttpServletResponse response, Subject<String, Object> subject) {
         /**
          * 未登录直接跳过
          */
@@ -102,8 +107,10 @@ public class DefaultSecurityManager implements SecurityManager{
         /**
          * 客户端cookie移除
          */
-        PrincipalInvalidCookie cookie = new PrincipalInvalidCookie();
-        response.addCookie(cookie.toHttpCookie());
+        if(response != null){
+            PrincipalInvalidCookie cookie = new PrincipalInvalidCookie();
+            response.addCookie(cookie.toHttpCookie());
+        }
     }
     
     @Override
