@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.core.DefaultSubject;
-import org.yangyuan.security.core.SessionManager;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
 import org.yangyuan.security.exception.SecurityFilterAuthException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.filter.common.SecurityFilter;
+import org.yangyuan.security.util.SecurityUtils;
 
 /**
  * 基础认证实现
@@ -31,7 +31,7 @@ public class AuthcSecurityFilter implements SecurityFilter{
     
     @Override
     public void doFilter(String permission, HttpServletRequest request) {
-        DefaultSubject subject = (DefaultSubject) SessionManager.getSubject();
+        DefaultSubject subject = SecurityUtils.getSubject();
         
         /**
          * 未登录

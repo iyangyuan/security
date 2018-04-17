@@ -7,23 +7,23 @@ import org.yangyuan.security.core.common.Subject;
  * @author yangyuan
  * @date 2017年4月26日
  */
-@SuppressWarnings("rawtypes")
 public class SessionManager{
-    protected static final ThreadLocal<Subject> LOCAL_SUBJECT = new ThreadLocal<Subject>();
+    protected static final ThreadLocal<Subject<?, ?>> LOCAL_SUBJECT = new ThreadLocal<Subject<?, ?>>();
     
     /**
      * 获取当前线程中的主题
      * @return 主题
      */
-    public static Subject getSubject() {
-        return LOCAL_SUBJECT.get();
+    @SuppressWarnings("unchecked")
+    public static <K, V> Subject<K, V> getSubject() {
+        return (Subject<K, V>) LOCAL_SUBJECT.get();
     }
     
     /**
      * 设置当前线程中的主题
      * @param subject 主题
      */
-    public static void setSubject(Subject subject) {
+    public static <K, V> void setSubject(Subject<K, V> subject) {
         LOCAL_SUBJECT.set(subject);
     }
     

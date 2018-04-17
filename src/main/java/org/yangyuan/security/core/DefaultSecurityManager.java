@@ -16,6 +16,7 @@ import org.yangyuan.security.exception.SecurityFilterAuthException;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
 import org.yangyuan.security.filter.BasicHttpAuthenticationSecurityFilter;
+import org.yangyuan.security.util.SecurityUtils;
 
 /**
  * 默认安全管理器实现
@@ -41,7 +42,7 @@ public class DefaultSecurityManager implements SecurityManager{
         /**
          * 创建subject
          */
-        DefaultSubject clientSubject = (DefaultSubject) SessionManager.getSubject();
+        DefaultSubject clientSubject = SecurityUtils.getSubject();
         DefaultSubject subject = null;
         if(ResourceManager.core().isUseClientSubjectLogin() && clientSubject != null){
             subject = DefaultSubject.valid(clientSubject);
@@ -77,7 +78,7 @@ public class DefaultSecurityManager implements SecurityManager{
 
     @Override
     public void logout(HttpServletResponse response) {
-        DefaultSubject subject = (DefaultSubject) SessionManager.getSubject();
+        DefaultSubject subject = SecurityUtils.getSubject();
         logout(response, subject);
     }
     

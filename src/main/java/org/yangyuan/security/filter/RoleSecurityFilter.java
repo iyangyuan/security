@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.Role;
 import org.yangyuan.security.core.DefaultSubject;
-import org.yangyuan.security.core.SessionManager;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
@@ -35,7 +34,7 @@ public class RoleSecurityFilter implements SecurityFilter{
 
     @Override
     public void doFilter(String permission, HttpServletRequest request) {
-        DefaultSubject subject = (DefaultSubject) SessionManager.getSubject();
+        DefaultSubject subject = SecurityUtils.getSubject();;
         
         /**
          * 未登录

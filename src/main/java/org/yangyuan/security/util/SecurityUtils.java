@@ -20,7 +20,6 @@ import org.yangyuan.security.dao.common.StatisticalSessionDao;
  * @author yangyuan
  * @date 2017年4月26日
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
 public class SecurityUtils {
     
     /**
@@ -51,8 +50,9 @@ public class SecurityUtils {
      * 获取当前上下文中的主题
      * @return 如果用户未登录，返回null
      */
-    public static Subject getSubject(){
-        Subject subject = SessionManager.getSubject();
+    @SuppressWarnings("unchecked")
+    public static <T extends Subject<?, ?>> T getSubject(){
+        Subject<?, ?> subject = SessionManager.getSubject();
         
         /**
          * 未登录
@@ -71,7 +71,7 @@ public class SecurityUtils {
         /**
          * 返回主题
          */
-        return subject;
+        return (T) subject;
     }
     
     /**
@@ -122,6 +122,7 @@ public class SecurityUtils {
      * 获取当前上下文中关联的用户角色列表
      * @return 如果用户未登录，返回null
      */
+    @SuppressWarnings("unchecked")
     public static List<Role> getRoles(){
         Session<String, Object> session = SecurityUtils.getSession();
         
@@ -144,7 +145,8 @@ public class SecurityUtils {
         }
         
         session.set(DefaultSession.SESSION_ROLES, roles);
-        ResourceManager.dao().getRedisSessionDao().doCreate(getSubject());  //保存到redis中
+        Subject<String, Object> subject = getSubject();
+        ResourceManager.dao().getRedisSessionDao().doCreate(subject);  //保存到redis中
         CacheManager cacheManager = ResourceManager.core().getCacheManager();
         cacheManager.invalid(getSubject());  //强制缓存失效
     }
