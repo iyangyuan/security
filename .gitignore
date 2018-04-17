@@ -2,8 +2,9 @@
 *.jar
 *.war
 *.ear
-/target
+/target/
 /.settings
+.settings
 
 # Compiled class file
 *.class
@@ -27,3 +28,6 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+target/classes/security.properties
+target/classes/META-INF/maven/org.yangyuan/security/pom.properties
+.settings/org.eclipse.core.resources.prefs
