@@ -4,10 +4,10 @@ package org.yangyuan.security.core.common;
  * 安全认证主题定义，非常核心的接口
  * @author yangyuan
  * @date 2017年4月26日 
- * @param <T> 主题承载session key类型
- * @param <E> 主题承载session value类型
+ * @param <K> 主题承载session key类型
+ * @param <V> 主题承载session value类型
  */
-public interface Subject<T, E> extends SecuritySerializable{
+public interface Subject<K, V> extends SecuritySerializable{
     
     /**
      * 获取当前主题关联的唯一标识
@@ -21,7 +21,7 @@ public interface Subject<T, E> extends SecuritySerializable{
      * 获取当前主题关联的session实例
      * @return session实例
      */
-    Session<T, E> getSession();
+    Session<K, V> getSession();
     
     /**
      * 主题是否有效

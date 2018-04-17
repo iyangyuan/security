@@ -4,13 +4,13 @@ package org.yangyuan.security.core.common;
  * 缓存管理器定义
  * @author yangyuan
  * @date 2018年3月30日 
- * @param <T> key类型
- * @param <E> value类型
+ * @param <K> key类型
+ * @param <V> value类型
  */
-public interface CacheManager<T, E> {
+public interface CacheManager<K, V> {
     /**
      * 强制缓存失效
      * @param subject
      */
-    void invalid(Subject<T, E> subject);
+    void invalid(Subject<K, V> subject);
 }

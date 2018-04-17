@@ -86,8 +86,8 @@ public class CoreResource {
         return principalFactory;
     }
     @SuppressWarnings("unchecked")
-    public <T, E> CacheManager<T, E> getCacheManager() {
-        return (CacheManager<T, E>) cacheManager;
+    public <K, V> CacheManager<K, V> getCacheManager() {
+        return (CacheManager<K, V>) cacheManager;
     }
     public SecurityAuthHandler getSecurityAuthHandler() {
         return securityAuthHandler;
@@ -161,7 +161,7 @@ public class CoreResource {
             this.principalFactory = principalFactory;
             return this;
         }
-        public <T, E> Builder cacheManager(CacheManager<T, E> cacheManager) {
+        public <K, V> Builder cacheManager(CacheManager<K, V> cacheManager) {
             this.cacheManager = cacheManager;
             return this;
         }

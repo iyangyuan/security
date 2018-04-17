@@ -8,29 +8,29 @@ import org.yangyuan.security.core.common.Subject;
  * 缓存数据访问层定义
  * @author yangyuan
  * @date 2017年4月26日 
- * @param <T> key 类型
- * @param <E> value 类型
+ * @param <K> key 类型
+ * @param <V> value 类型
  */
-public interface CacheSessionDao<T, E> {
+public interface CacheSessionDao<K, V> {
     
     /**
      * 读取主题
      * @param subject 主题
      * @return 缓存中的主题
      */
-    Subject<T, E> doRead(Subject<T, E> subject);
+    Subject<K, V> doRead(Subject<K, V> subject);
     
     /**
      * 创建主题
      * @param subject 主题
      */
-    void doCreate(Subject<T, E> subject);
+    void doCreate(Subject<K, V> subject);
     
     /**
      * 移除主题
      * @param subject 主题
      */
-    void doDelete(Subject<T, E> subject);
+    void doDelete(Subject<K, V> subject);
     
     /**
      * 查询用户主题列表
@@ -41,6 +41,6 @@ public interface CacheSessionDao<T, E> {
      * @param userUnionid 用户唯一标识
      * @return 用户主题列表
      */
-    List<Subject<T, E>> queryUserSubjects(String userUnionid);
+    List<Subject<K, V>> queryUserSubjects(String userUnionid);
     
 }
