@@ -78,14 +78,15 @@ public class SecurityUtils {
      * 获取当前上下文中的会话
      * @return 如果用户未登录，返回null
      */
-    public static Session<String, Object> getSession(){
-        Subject<String, Object> subject = SecurityUtils.getSubject();
+    @SuppressWarnings("unchecked")
+    public static <T extends Session<?, ?>> T getSession(){
+        Subject<?, ?> subject = SecurityUtils.getSubject();
         
         if(subject == null){
             return null;
         }
         
-        return subject.getSession();
+        return (T) subject.getSession();
     }
     
     /**
