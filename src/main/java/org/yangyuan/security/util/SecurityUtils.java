@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.yangyuan.security.bean.Role;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.DefaultSession;
-import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.SessionManager;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.SecurityToken;
@@ -146,8 +145,8 @@ public class SecurityUtils {
         
         session.set(DefaultSession.SESSION_ROLES, roles);
         ResourceManager.dao().getRedisSessionDao().doCreate(getSubject());  //保存到redis中
-        CacheManager<String, Object> cacheManager = ResourceManager.core().getCacheManager();
-        cacheManager.invalid((DefaultSubject) getSubject());  //强制缓存失效
+        CacheManager cacheManager = ResourceManager.core().getCacheManager();
+        cacheManager.invalid(getSubject());  //强制缓存失效
     }
     
     /**
@@ -160,7 +159,7 @@ public class SecurityUtils {
         for(Subject<String, Object> subject : subjects){
             subject.getSession().set(DefaultSession.SESSION_ROLES, roles);
             ResourceManager.dao().getRedisSessionDao().doCreate(subject);
-            CacheManager<String, Object> cacheManager = ResourceManager.core().getCacheManager();
+            CacheManager cacheManager = ResourceManager.core().getCacheManager();
             cacheManager.invalid(subject);
         }
     }
@@ -301,8 +300,8 @@ public class SecurityUtils {
      * 失效当前上下文中的缓存(分布式实现)
      */
     public static void invalidCache(){
-        CacheManager<String, Object> cacheManager = ResourceManager.core().getCacheManager();
-        cacheManager.invalid((DefaultSubject) getSubject());
+        CacheManager cacheManager = ResourceManager.core().getCacheManager();
+        cacheManager.invalid(getSubject());
     }
     
     /**

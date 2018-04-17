@@ -54,7 +54,7 @@ public class CoreResource {
     /**
      * 缓存管理器
      */
-    private final CacheManager<?, ?> cacheManager;
+    private final CacheManager cacheManager;
     /**
      * 认证回调处理器
      */
@@ -85,9 +85,8 @@ public class CoreResource {
     public PrincipalFactory getPrincipalFactory() {
         return principalFactory;
     }
-    @SuppressWarnings("unchecked")
-    public <K, V> CacheManager<K, V> getCacheManager() {
-        return (CacheManager<K, V>) cacheManager;
+    public CacheManager getCacheManager() {
+        return cacheManager;
     }
     public SecurityAuthHandler getSecurityAuthHandler() {
         return securityAuthHandler;
@@ -135,7 +134,7 @@ public class CoreResource {
         /**
          * 缓存管理器
          */
-        private CacheManager<?, ?> cacheManager;
+        private CacheManager cacheManager;
         /**
          * 认证回调处理器
          */
@@ -161,7 +160,7 @@ public class CoreResource {
             this.principalFactory = principalFactory;
             return this;
         }
-        public <K, V> Builder cacheManager(CacheManager<K, V> cacheManager) {
+        public Builder cacheManager(CacheManager cacheManager) {
             this.cacheManager = cacheManager;
             return this;
         }

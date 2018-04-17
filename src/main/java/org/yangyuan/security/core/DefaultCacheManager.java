@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPubSub;
  * @author yangyuan
  * @date 2017年6月6日
  */
-public class DefaultCacheManager implements CacheManager<String, Object>{
+public class DefaultCacheManager implements CacheManager{
     
     private static final Log log = LogFactory.getLog(DefaultCacheManager.class);
     
@@ -113,7 +113,7 @@ public class DefaultCacheManager implements CacheManager<String, Object>{
     }
     
     @Override
-    public void invalid(Subject<String, Object> subject){
+    public <K, V> void invalid(Subject<K, V> subject){
         Jedis redis = null;
         try {
             redis = ResourceManager.common().getRedisResourceFactory().getResource();

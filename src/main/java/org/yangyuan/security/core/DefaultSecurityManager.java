@@ -101,7 +101,7 @@ public class DefaultSecurityManager implements SecurityManager{
          * 服务端数据移除
          */
         ResourceManager.dao().getRedisSessionDao().doDelete(subject);
-        CacheManager<String, Object> cacheManager = ResourceManager.core().getCacheManager();
+        CacheManager cacheManager = ResourceManager.core().getCacheManager();
         cacheManager.invalid(subject);
         
         /**

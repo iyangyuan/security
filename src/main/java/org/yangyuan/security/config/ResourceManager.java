@@ -62,7 +62,7 @@ public class ResourceManager {
         
         SecurityManager securityManager = getInstance(SecurityConfigUtils.cellString("core.securityManager"));
         PrincipalFactory principalFactory = getInstance(SecurityConfigUtils.cellString("core.principalFactory"));
-        CacheManager<?, ?> cacheManager = getInstance(SecurityConfigUtils.cellString("core.cacheManager"));
+        CacheManager cacheManager = getInstance(SecurityConfigUtils.cellString("core.cacheManager"));
         SecurityAuthHandler securityAuthHandler = getInstance(SecurityConfigUtils.cellString("core.securityAuthHandler"));
         coreResource = 
         CoreResource.custom()
