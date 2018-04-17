@@ -8,15 +8,15 @@ import org.yangyuan.security.core.common.Subject;
  * 缓存数据访问层定义
  * @author yangyuan
  * @date 2017年4月26日 
- * @param <T>
- * @param <E>
+ * @param <T> key 类型
+ * @param <E> value 类型
  */
 public interface CacheSessionDao<T, E> {
     
     /**
      * 读取主题
      * @param subject 主题
-     * @return
+     * @return 缓存中的主题
      */
     Subject<T, E> doRead(Subject<T, E> subject);
     

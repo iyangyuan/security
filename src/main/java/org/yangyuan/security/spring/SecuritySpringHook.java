@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
+import org.yangyuan.security.core.DefaultCacheManager;
 import org.yangyuan.security.dao.RedisSessionDao;
 
 /**
@@ -30,6 +31,7 @@ public class SecuritySpringHook implements ApplicationContextAware, ApplicationL
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
         RedisSessionDao.gcStop();
+        DefaultCacheManager.destroy();
     }
     
     /**

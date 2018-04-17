@@ -8,7 +8,7 @@ package org.yangyuan.security.core.common;
 public interface SecuritySerializable {
     /**
      * 序列化
-     * @return
+     * @return 字节数组
      */
     byte[] getBytes();
 }

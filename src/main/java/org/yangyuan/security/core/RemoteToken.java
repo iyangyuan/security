@@ -20,7 +20,7 @@ public abstract class RemoteToken implements SecurityToken {
     
     /**
      * 第三方平台代码
-     * 
+     * <br>
      * 1 qq， 2 微信， 3 微博
      * 
      * @return

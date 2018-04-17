@@ -16,6 +16,9 @@ import net.sf.ehcache.Element;
  * @date 2017年4月26日
  */
 public class EhcacheSessionDao implements CacheSessionDao<String, Object>{
+    /**
+     * 缓存容器
+     */
     private final Cache cache;
     
     public EhcacheSessionDao() {

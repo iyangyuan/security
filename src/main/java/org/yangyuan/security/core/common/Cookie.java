@@ -8,7 +8,7 @@ package org.yangyuan.security.core.common;
 public interface Cookie {
     /**
      * 转换为Http协议标准Cookie
-     * @return
+     * @return Http协议标准Cookie
      */
     javax.servlet.http.Cookie toHttpCookie();
 }

@@ -13,7 +13,7 @@ import org.apache.http.impl.client.HttpClients;
  * 抽象HTTP SSL客户端骨架
  * <p>所有HTTP SSL客户端实现都是专用的，不能通用</p>
  * @author yangyuan
- * 
+ * @date 2018年4月17日
  */
 public abstract class AbstractSSLHttpClient extends AbstractHttpClient{
     /**
@@ -56,7 +56,7 @@ public abstract class AbstractSSLHttpClient extends AbstractHttpClient{
     /**
      * 获取SSL套接字工厂
      * <p>注意：由于此方法在父类构造方法中调用，子类实现该方法时，不能访问子类的成员变量，否则会造成子类数据访问失败！</p>
-     * @return
+     * @return SSL套接字
      */
     protected abstract SSLConnectionSocketFactory getSSLSocketFactory();
 }

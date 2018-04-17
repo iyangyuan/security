@@ -5,9 +5,6 @@ import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.stereotype.Component;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.Subject;
@@ -127,19 +124,6 @@ public class DefaultCacheManager implements CacheManager<String, Object>{
             if(redis != null){
                 redis.close();
             }
-        }
-    }
-    
-    /**
-     * 应用关闭监听器
-     * @author yangyuan
-     * @date 2018年3月30日
-     */
-    @Component
-    private static class DefaultCacheManagerShutdownListener implements ApplicationListener<ContextClosedEvent> {
-        @Override
-        public void onApplicationEvent(ContextClosedEvent event) {
-            destroy();
         }
     }
     

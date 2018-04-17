@@ -11,16 +11,16 @@ public interface Session<T, E> extends SecuritySerializable{
     
     /**
      * 获取会话数据
-     * @param key
-     * @return
+     * @param key the key whose associated value is to be returned
+     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
      */
     E get(T key);
     
     /**
      * 设置会话数据
-     * @param key
-     * @param value
-     * @return
+     * @param key key with which the specified value is to be associated
+     * @param value value to be associated with the specified key
+     * @return the previous value associated with key, or null if there was no mapping for key. (A null return can also indicate that the map previously associated null with key, if the implementation supports null values.)
      */
     E set(T key, E value);
     

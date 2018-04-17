@@ -66,8 +66,8 @@ public class DefaultSession implements Session<String, Object>{
     
     /**
      * 反序列化
-     * @param bytes
-     * @return
+     * @param bytes 原始字节数组
+     * @return session实例
      */
     public static DefaultSession parse(byte[] bytes){
         try {

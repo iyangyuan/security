@@ -13,10 +13,11 @@ import org.yangyuan.security.bean.User;
 public interface SecurityManager {
     /**
      * 登录
-     * <p>如果正常执行，说明登录成功；登录失败会抛出对应的运行时异常</p>
+     * <p>如果正常执行，说明登录成功</p>
+     * <p>登录失败会抛出对应的运行时异常</p>
      * @param token 登录令牌
      * @param response http响应对象
-     * @return 登录成功后返回用户全局唯一id(unionid)
+     * @return 实例中必须包含[用户全局唯一id(unionid)]和[用户角色列表(roles)]
      */
     User login(SecurityToken token, HttpServletResponse response);
     

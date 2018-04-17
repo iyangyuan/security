@@ -13,6 +13,9 @@ import org.yangyuan.security.config.CoreResource;
  * @date 2018年3月30日
  */
 public class SecurityConfigUtils {
+    /**
+     * 配置容器
+     */
     private static final Properties PROPERTIES = new Properties();
     
     static {
@@ -40,9 +43,9 @@ public class SecurityConfigUtils {
     }
     
     /**
-     * 读取配置文件
-     * @param name 
-     * @return
+     * 读取配置
+     * @param name 配置名称
+     * @return 配置值
      */
     public static String cell(String name){
         String result = PROPERTIES.getProperty(name);
@@ -55,40 +58,45 @@ public class SecurityConfigUtils {
     }
     
     /**
-     * 读取配置文件, int值
-     * @param name
+     * 读取配置
+     * @param name 配置名称
+     * @return 配置int值
      */
     public static int cellInt(String name){
         return Integer.parseInt(cell(name));
     }
     
     /**
-     * 读取配置文件, long值
-     * @param name
+     * 读取配置
+     * @param name 配置名称
+     * @return 配置long值
      */
     public static long cellLong(String name){
         return Long.parseLong(cell(name));
     }
     
     /**
-     * 读取配置文件, double值
-     * @param name
+     * 读取配置
+     * @param name 配置名称
+     * @return 配置double值
      */
     public static double cellDouble(String name){
         return Double.parseDouble(cell(name));
     }
     
     /**
-     * 读取配置文件, boolean值
-     * @param name
+     * 读取配置
+     * @param name 配置名称
+     * @return 配置boolean值
      */
     public static boolean cellBoolean(String name){
         return Boolean.parseBoolean(cell(name));
     }
     
     /**
-     * 读取配置文件, string值
-     * @param name
+     * 读取配置
+     * @param name 配置名称
+     * @return 配置string值
      */
     public static String cellString(String name){
         return cell(name);

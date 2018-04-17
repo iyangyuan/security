@@ -19,7 +19,7 @@ import org.yangyuan.security.http.response.SimpleResponse;
 /**
  * 抽象HTTP客户端骨架
  * @author yangyuan
- *
+ * @date 2018年4月17日
  */
 public abstract class AbstractHttpClient {
     

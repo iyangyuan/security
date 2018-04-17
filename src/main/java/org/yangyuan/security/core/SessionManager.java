@@ -13,7 +13,7 @@ public class SessionManager{
     
     /**
      * 获取当前线程中的主题
-     * @return
+     * @return 主题
      */
     public static Subject getSubject() {
         return LOCAL_SUBJECT.get();
@@ -21,7 +21,7 @@ public class SessionManager{
     
     /**
      * 设置当前线程中的主题
-     * @param subject
+     * @param subject 主题
      */
     public static void setSubject(Subject subject) {
         LOCAL_SUBJECT.set(subject);

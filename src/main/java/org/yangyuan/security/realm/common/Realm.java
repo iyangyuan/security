@@ -13,7 +13,7 @@ public interface Realm {
     /**
      * 获取认证系统用户
      * @param token 令牌
-     * @return 认证系统用户，目前包含unionid、roles
+     * @return 认证系统用户，实例中必须包含[用户全局唯一id(unionid)]和[用户角色列表(roles)]
      */
     User getUser(SecurityToken token);
     

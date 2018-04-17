@@ -2,12 +2,13 @@ package org.yangyuan.security.http.response;
 
 import java.nio.charset.Charset;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 
 /**
  * 通用HTTP响应封装
  * @author 杨元
- *
+ * @date 2018年4月17日
  */
 public class SimpleResponse {
     
@@ -41,7 +42,7 @@ public class SimpleResponse {
 
     /**
      * 获取响应体原始字节数组
-     * @return
+     * @return 响应体字节数组
      */
     public byte[] getByteBody() {
         return body;
@@ -49,11 +50,11 @@ public class SimpleResponse {
     
     /**
      * 获取响应体编码后的字符串
-     * @return
+     * @return 响应体字符串
      */
     public String getStringBody() {
         if(body == null){
-            return "";
+            return StringUtils.EMPTY;
         }
         
         return new String(body, Charset.forName(charset));
@@ -73,7 +74,7 @@ public class SimpleResponse {
 
     /**
      * 设置响应体编码
-     * @param charset
+     * @param charset 编码名称
      */
     public void setCharset(String charset) {
         this.charset = charset;

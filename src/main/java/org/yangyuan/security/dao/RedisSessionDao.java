@@ -324,7 +324,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
      * <br>
      * hash key 用来存储subject数据
      * @param partition 分区
-     * @return
+     * @return subject hash key
      */
     private static String buildeHashKey(String partition){
         return "security:session:hash:".concat(partition);
@@ -335,7 +335,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
      * <br>
      * set key 用来维护subject生命周期
      * @param partition 分区
-     * @return
+     * @return subject set key
      */
     private static String buildeSetKey(String partition){
         return "security:session:set:".concat(partition);

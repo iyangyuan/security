@@ -12,8 +12,8 @@ import org.yangyuan.security.config.ResourceManager;
 public class SecurityMD5 {
     /**
      * 计算MD5
-     * @param text 字符串
-     * @return MD5摘要十六进制字符串表示
+     * @param text 文本
+     * @return MD5摘要十六进制小写字符串表示
      */
     public static String encode(String text) {
         try {
@@ -29,7 +29,7 @@ public class SecurityMD5 {
     /**
      * 计算MD5
      * @param bytes 字节数组
-     * @return MD5摘要十六进制字符串表示
+     * @return MD5摘要十六进制小写字符串表示
      */
     public static String encode(byte[] bytes) {
         try {

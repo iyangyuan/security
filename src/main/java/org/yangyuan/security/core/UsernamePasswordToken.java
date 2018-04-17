@@ -8,8 +8,17 @@ import org.yangyuan.security.core.common.SecurityToken;
  * @date 2017年4月26日
  */
 public class UsernamePasswordToken implements SecurityToken{
+    /**
+     * 用户名
+     */
     private final String username;
+    /**
+     * 密码
+     */
     private final String passwrod;
+    /**
+     * 记住我
+     */
     private final boolean remember;
     
     public UsernamePasswordToken(String username, String passwrod){

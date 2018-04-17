@@ -6,7 +6,7 @@ package org.yangyuan.security.exception;
  * @date 2018年4月12日
  */
 public class SecurityFilterBasicAuthException extends RuntimeException{
-    private static final long serialVersionUID = 8393729605818992365L;
+    private static final long serialVersionUID = 8393729605818992366L;
     
     public SecurityFilterBasicAuthException() {
         super();

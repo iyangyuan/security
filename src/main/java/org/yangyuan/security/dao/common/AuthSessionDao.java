@@ -13,7 +13,7 @@ public interface AuthSessionDao {
     /**
      * 认证
      * @param token 令牌
-     * @return 正常执行，认证成功；认证失败会抛出相应的运行时异常。返回的User模型中unionid必然非空。
+     * @return 正常执行，认证成功。<br>认证失败会抛出相应的运行时异常。<br>实例中必须包含[用户全局唯一id(unionid)]和[用户角色列表(roles)]。
      */
     User auth(SecurityToken token);
     

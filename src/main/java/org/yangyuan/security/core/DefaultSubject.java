@@ -52,7 +52,7 @@ public final class DefaultSubject implements Subject<String, Object>{
         if(session == null){
             session = new DefaultSession();
         }
-        this .session = session;
+        this.session = session;
     }
     
     /**
@@ -67,7 +67,7 @@ public final class DefaultSubject implements Subject<String, Object>{
         if(session == null){
             session = new DefaultSession();
         }
-        this .session = session;
+        this.session = session;
     }
     
     @Override
@@ -128,7 +128,7 @@ public final class DefaultSubject implements Subject<String, Object>{
      * @param principal 唯一标识
      * @param valid 是否有效
      * @param session 会话，传null自动创建
-     * @return
+     * @return subject实例
      */
     public static DefaultSubject getInstance(String principal, boolean valid, Session<String, Object> session){
         return new DefaultSubject(principal, valid, session);
@@ -161,7 +161,7 @@ public final class DefaultSubject implements Subject<String, Object>{
     /**
      * 反序列化
      * @param bytes 原始字节数组
-     * @return
+     * @return subject实例
      */
     public static DefaultSubject parse(byte[] bytes){
         try {

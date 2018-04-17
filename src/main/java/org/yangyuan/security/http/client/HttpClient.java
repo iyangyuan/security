@@ -13,7 +13,7 @@ import org.yangyuan.security.http.client.common.AbstractHttpClient;
  * 普通通用HTTP客户端
  * <p><b>普通</b>的含义即：非HTTP SSL客户端</p>
  * @author yangyuan
- * 
+ * @date 2018年4月17日
  */
 public class HttpClient extends AbstractHttpClient{
     /**

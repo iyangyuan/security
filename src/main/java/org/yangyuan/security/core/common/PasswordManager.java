@@ -25,18 +25,6 @@ public class PasswordManager {
      */
     public static final String DEFAULT_CHARSET = "ISO-8859-1";
     
-//    public static void main(String[] args) {
-//        String text = "123213sdf!@#DSAF23)()&(**$/.'p';',";
-//        String cert1 = encrypt(text);
-//        String cert2 = encrypt(text);
-//        System.out.println("cert1:" + cert1);
-//        System.out.println("cert2:" + cert2);
-//        System.out.println("success matches cert1:" + matches(text, cert1));
-//        System.out.println("success matches cert2:" + matches(text, cert2));
-//        System.out.println("fail matches cert1:" + matches("sdfsdaf3w4", cert1));
-//        System.out.println("fail matches cert2:" + matches("sdfsdaf3w4", cert2));
-//    }
-    
     /**
      * 动态加密
      * @param text 明文
@@ -56,6 +44,7 @@ public class PasswordManager {
     private static String encrypt(String text, int factor){
         /**
          * md5
+         * 此步骤建议在自己的真实项目中移除，因为它会弱化密码安全性。作者加上这步是为了项目兼容性升级
          */
         text = SecurityMD5.encode(text);
         
@@ -67,7 +56,7 @@ public class PasswordManager {
         /**
          * reverse
          */
-        byte[] bytes = sha256.getBytes(Charset.forName("ISO-8859-1"));
+        byte[] bytes = sha256.getBytes(Charset.forName(DEFAULT_CHARSET));
         int start = factor % 10;
         int end = factor;
         ArrayUtils.reverse(bytes, start, end);
@@ -114,33 +103,33 @@ public class PasswordManager {
     /**
      * SHA-256实现
      * @param text 文本
-     * @return
+     * @return 摘要
      */
     private static String sha256(String text){
         try {
-            // SHA 加密开始
-            // 创建加密对象 并傳入加密類型
+            /**
+             * 创建SHA-256加密对象
+             */
             MessageDigest messageDigest = MessageDigest.getInstance(DEFAULT_HASH_ALGORITHM);
-            // 传入要加密的字符串
-            messageDigest.update(text.getBytes(Charset.forName(DEFAULT_CHARSET)));
-            // 得到 byte 類型结果
-            byte[] byteBuffer = messageDigest.digest();
             
-            // 將 byte 轉換爲 string
-            StringBuilder strHexString = new StringBuilder();
-            // 遍歷 byte buffer
-            for (int i = 0; i < byteBuffer.length; i++){
-              String hex = Integer.toHexString(0xff & byteBuffer[i]);
+            /**
+             * 计算摘要
+             */
+            messageDigest.update(text.getBytes(Charset.forName(DEFAULT_CHARSET)));
+            byte[] bytes = messageDigest.digest();
+            StringBuilder builder = new StringBuilder(128);
+            for (int i = 0; i < bytes.length; i++){
+              String hex = Integer.toHexString(0xff & bytes[i]);
               if (hex.length() == 1){
-                strHexString.append('0');
+                  builder.append('0');
               }
-              strHexString.append(hex);
+              builder.append(hex);
             }
-            // 得到返回結果
-            return strHexString.toString();
-          }  catch (NoSuchAlgorithmException e)  {
+            
+            return builder.toString();
+        }  catch (NoSuchAlgorithmException e)  {
             throw new RuntimeException(e);
-          }
+        }
     }
     
 }
