@@ -26,6 +26,7 @@ public class ResourceManager {
     private static final Log log = LogFactory.getLog(ResourceManager.class);
     
     private static CommonResource commonResource;
+    private static CacheResource cacheResource;
     private static CookieResource cookieResource;
     private static CoreResource coreResource;
     private static DaoResource daoResource;
@@ -40,6 +41,17 @@ public class ResourceManager {
         commonResource =
         CommonResource.custom()
                         .redisResourceFactory(redisResourceFactory)
+                        .build();
+        
+        cacheResource = 
+        CacheResource.custom()
+                        .maxElementsInMemory(SecurityConfigUtils.cellInt("cache.maxElementsInMemory"))
+                        .eternal(SecurityConfigUtils.cellBoolean("cache.eternal"))
+                        .overflowToDisk(SecurityConfigUtils.cellBoolean("cache.overflowToDisk"))
+                        .diskPersistent(SecurityConfigUtils.cellBoolean("cache.diskPersistent"))
+                        .timeToIdleSeconds(SecurityConfigUtils.cellInt("cache.timeToIdleSeconds"))
+                        .timeToLiveSeconds(SecurityConfigUtils.cellInt("cache.timeToLiveSeconds"))
+                        .memoryStoreEvictionPolicy(SecurityConfigUtils.cellString("cache.memoryStoreEvictionPolicy"))
                         .build();
         
         cookieResource = 
@@ -102,6 +114,14 @@ public class ResourceManager {
      */
     public static CommonResource common(){
         return commonResource;
+    }
+    
+    /**
+     * 缓存资源
+     * @return
+     */
+    public static CacheResource cache(){
+        return cacheResource;
     }
     
     /**

@@ -9,6 +9,9 @@ import org.yangyuan.security.dao.common.CacheSessionDao;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.config.CacheConfiguration;
+import net.sf.ehcache.config.Configuration;
+import net.sf.ehcache.config.DiskStoreConfiguration;
 
 /**
  * ehcache缓存数据访问层实现
@@ -17,16 +20,42 @@ import net.sf.ehcache.Element;
  */
 public class EhcacheSessionDao implements CacheSessionDao<String, Object>{
     /**
+     * 缓存名称
+     */
+    private static final String CACHE_NAME = "securitySubjectCache";
+    
+    /**
      * 缓存容器
      */
     private final Cache cache;
     
+    @SuppressWarnings("deprecation")
     public EhcacheSessionDao() {
         /**
-         * 初始化底层缓存，这里初始化的缓存是带有自定义配置的
+         * 缓存配置
          */
-        CacheManager manager = CacheManager.newInstance(ResourceManager.core().getAppClassPath() + "security-ehcache.xml");
-        cache = manager.getCache("securitySessionCache");
+        CacheConfiguration cacheConfig = new CacheConfiguration();
+        cacheConfig.name(CACHE_NAME)
+                   .maxEntriesLocalHeap(ResourceManager.cache().getMaxElementsInMemory())
+                   .eternal(ResourceManager.cache().isEternal())
+                   .timeToIdleSeconds(ResourceManager.cache().getTimeToIdleSeconds())
+                   .timeToLiveSeconds(ResourceManager.cache().getTimeToLiveSeconds())
+                   .memoryStoreEvictionPolicy(ResourceManager.cache().getMemoryStoreEvictionPolicy())
+                   .overflowToDisk(ResourceManager.cache().isOverflowToDisk())
+                   .diskPersistent(ResourceManager.cache().isDiskPersistent());
+        
+        /**
+         * 缓存配置容器
+         */
+        Configuration config = new Configuration();
+        config.diskStore(new DiskStoreConfiguration().path("java.io.tmpdir"));
+        config.cache(cacheConfig);
+        
+        /**
+         * 缓存管理器
+         */
+        CacheManager manager = CacheManager.newInstance(config);
+        cache = manager.getCache(CACHE_NAME);
     }
     
     @SuppressWarnings("unchecked")
