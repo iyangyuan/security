@@ -10,7 +10,7 @@ import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
-import org.yangyuan.security.filter.common.SecurityFilter;
+import org.yangyuan.security.filter.common.AbstractSecurityCacheFilter;
 import org.yangyuan.security.util.SecurityUtils;
 
 /**
@@ -19,7 +19,7 @@ import org.yangyuan.security.util.SecurityUtils;
  * @date 2017年4月26日
  */
 @SecurityFilterComponent(value = "index/3")
-public class RoleSecurityFilter implements SecurityFilter{
+public class RoleSecurityFilter extends AbstractSecurityCacheFilter{
     
     private static final String FILETER_NAME = "roles";
     
@@ -51,9 +51,17 @@ public class RoleSecurityFilter implements SecurityFilter{
         }
         
         /**
-         * 角色验证
+         * 解析
          */
-        List<Role> roles = Role.parseRole(permission);
+        List<Role> roles = cached(permission);  //优先从缓存中获取
+        if(roles == null){  //缓存未命中
+            roles = Role.parseRole(permission);  //解析
+            caching(permission, roles);  //缓存
+        }
+        
+        /**
+         * 角色认证
+         */
         if(SecurityUtils.hasAnyRole(roles)){
             return;  //认证通过
         }

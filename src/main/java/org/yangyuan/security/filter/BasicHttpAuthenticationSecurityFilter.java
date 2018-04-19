@@ -8,7 +8,7 @@ import org.yangyuan.security.bean.BasicAuth;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
-import org.yangyuan.security.filter.common.SecurityFilter;
+import org.yangyuan.security.filter.common.AbstractSecurityCacheFilter;
 
 /**
  * http basic authentication认证实现
@@ -16,7 +16,7 @@ import org.yangyuan.security.filter.common.SecurityFilter;
  * @date 2018年4月12日
  */
 @SecurityFilterComponent(value = "index/4")
-public class BasicHttpAuthenticationSecurityFilter implements SecurityFilter{
+public class BasicHttpAuthenticationSecurityFilter extends AbstractSecurityCacheFilter{
     
     private static final String FILETER_NAME = "basic";
     
@@ -60,15 +60,19 @@ public class BasicHttpAuthenticationSecurityFilter implements SecurityFilter{
         String authorization = authorizations[1];
         
         /**
-         * 解析表达式
+         * 解析
          */
-        BasicAuth basicAuth = BasicAuth.parseBasicAuth(permission);
+        BasicAuth basicAuth = cached(permission);  //优先从缓存中获取
+        if(basicAuth == null){  //缓存未命中
+            basicAuth = BasicAuth.parseBasicAuth(permission);  //解析
+            caching(permission, basicAuth);  //缓存
+        }
         
         /**
-         * 认证成功
+         * 认证
          */
         if(basicAuth.contains(authorization)){
-            return;
+            return;  //认证通过
         }
         
         /**
