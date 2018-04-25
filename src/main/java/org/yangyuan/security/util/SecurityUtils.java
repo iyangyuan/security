@@ -75,6 +75,19 @@ public class SecurityUtils {
     }
     
     /**
+     * 获取指定用户的主题列表
+     * @param userUnionid 用户唯一标识
+     * @return 如果用户未登录，返回空列表
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Subject<?, ?>> List<T> getUserSubjects(String userUnionid){
+        /**
+         * 返回主题列表
+         */
+        return (List<T>) ResourceManager.dao().getRedisSessionDao().queryUserSubjects(userUnionid);
+    }
+    
+    /**
      * 获取当前上下文中的会话
      * @return 如果用户未登录，返回null
      */

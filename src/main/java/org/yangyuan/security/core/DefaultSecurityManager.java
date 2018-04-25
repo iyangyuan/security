@@ -40,6 +40,11 @@ public class DefaultSecurityManager implements SecurityManager{
         }
         
         /**
+         * 并发主题控制
+         */
+        ResourceManager.core().getConcurrentSubjectControl().control(user);
+        
+        /**
          * 创建subject
          */
         DefaultSubject clientSubject = SecurityUtils.getSubject();

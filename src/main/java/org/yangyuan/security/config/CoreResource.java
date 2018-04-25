@@ -3,6 +3,7 @@ package org.yangyuan.security.config;
 import java.util.regex.Pattern;
 
 import org.yangyuan.security.core.common.CacheManager;
+import org.yangyuan.security.core.common.ConcurrentSubjectControl;
 import org.yangyuan.security.core.common.PrincipalFactory;
 import org.yangyuan.security.core.common.SecurityAuthHandler;
 import org.yangyuan.security.core.common.SecurityManager;
@@ -59,6 +60,10 @@ public class CoreResource {
      * 认证回调处理器
      */
     private final SecurityAuthHandler securityAuthHandler;
+    /**
+     * 并发主题控制器
+     */
+    private final ConcurrentSubjectControl concurrentSubjectControl;
     
     public CoreResource(Builder builder){
         this.charset = builder.charset;
@@ -68,6 +73,7 @@ public class CoreResource {
         this.principalFactory = builder.principalFactory;
         this.cacheManager = builder.cacheManager;
         this.securityAuthHandler = builder.securityAuthHandler;
+        this.concurrentSubjectControl = builder.concurrentSubjectControl;
     }
     
     public String getCharset() {
@@ -91,7 +97,10 @@ public class CoreResource {
     public SecurityAuthHandler getSecurityAuthHandler() {
         return securityAuthHandler;
     }
-    
+    public ConcurrentSubjectControl getConcurrentSubjectControl() {
+        return concurrentSubjectControl;
+    }
+
     /**
      * 自定义核心资源构造器
      * @return
@@ -139,6 +148,10 @@ public class CoreResource {
          * 认证回调处理器
          */
         private SecurityAuthHandler securityAuthHandler;
+        /**
+         * 并发主题控制器
+         */
+        private ConcurrentSubjectControl concurrentSubjectControl;
         
         public Builder charset(String charset) {
             this.charset = charset;
@@ -166,6 +179,10 @@ public class CoreResource {
         }
         public Builder securityAuthHandler(SecurityAuthHandler securityAuthHandler) {
             this.securityAuthHandler = securityAuthHandler;
+            return this;
+        }
+        public Builder concurrentSubjectControl(ConcurrentSubjectControl concurrentSubjectControl) {
+            this.concurrentSubjectControl = concurrentSubjectControl;
             return this;
         }
         public CoreResource build(){
@@ -218,6 +235,14 @@ public class CoreResource {
             builder.append("null");
         }else{
             builder.append(getSecurityAuthHandler().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[ConcurrentSubjectControl](");
+        if(getConcurrentSubjectControl() == null){
+            builder.append("null");
+        }else{
+            builder.append(getConcurrentSubjectControl().getClass().getName());
         }
         builder.append(")\n");
         

@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.yangyuan.security.core.SecurityFilterManager;
 import org.yangyuan.security.core.common.CacheManager;
+import org.yangyuan.security.core.common.ConcurrentSubjectControl;
 import org.yangyuan.security.core.common.PrincipalFactory;
 import org.yangyuan.security.core.common.SecurityAuthHandler;
 import org.yangyuan.security.core.common.SecurityManager;
@@ -76,6 +77,7 @@ public class ResourceManager {
         PrincipalFactory principalFactory = getInstance(SecurityConfigUtils.cellString("core.principalFactory"));
         CacheManager cacheManager = getInstance(SecurityConfigUtils.cellString("core.cacheManager"));
         SecurityAuthHandler securityAuthHandler = getInstance(SecurityConfigUtils.cellString("core.securityAuthHandler"));
+        ConcurrentSubjectControl concurrentSubjectControl = getInstance(SecurityConfigUtils.cellString("core.concurrentSubjectControl"));
         coreResource = 
         CoreResource.custom()
                         .useClientSubjectLogin(SecurityConfigUtils.cellBoolean("core.useClientSubjectLogin"))
@@ -83,6 +85,7 @@ public class ResourceManager {
                         .principalFactory(principalFactory)
                         .cacheManager(cacheManager)
                         .securityAuthHandler(securityAuthHandler)
+                        .concurrentSubjectControl(concurrentSubjectControl)
                         .build();
         
         CacheSessionDao<String, Object> ehcacheSessionDao = getInstance(SecurityConfigUtils.cellString("dao.ehcacheSessionDao"));
