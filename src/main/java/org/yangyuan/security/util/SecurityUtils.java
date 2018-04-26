@@ -194,7 +194,7 @@ public class SecurityUtils {
      * @param userUnionid 用户唯一标识
      */
     public static void setRoles(List<Role> roles, String userUnionid){
-        List<Subject<String, Object>> subjects = ResourceManager.dao().getRedisSessionDao().queryUserSubjects(userUnionid);
+        List<Subject<String, Object>> subjects = getUserSubjects(userUnionid);
         for(Subject<String, Object> subject : subjects){
             subject.getSession().set(DefaultSession.SESSION_ROLES, roles);
             ResourceManager.dao().getRedisSessionDao().doCreate(subject);
@@ -329,7 +329,7 @@ public class SecurityUtils {
      * @param userUnionid 用户唯一标识
      */
     public static void logout(String userUnionid){
-        List<Subject<String, Object>> subjects = ResourceManager.dao().getRedisSessionDao().queryUserSubjects(userUnionid);
+        List<Subject<String, Object>> subjects = getUserSubjects(userUnionid);
         for(Subject<String, Object> subject : subjects){
             ResourceManager.core().getSecurityManager().logout(null, subject);
         }
