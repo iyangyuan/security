@@ -1,9 +1,11 @@
 package org.yangyuan.security.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.Role;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.DefaultSession;
@@ -72,6 +74,27 @@ public class SecurityUtils {
          * 返回主题
          */
         return (T) subject;
+    }
+    
+    /**
+     * 获取当前上下文中关联用户的所有主题列表
+     * @return 如果当前上下文中未关联用户，即当前访问无用户登录，则返回空列表
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Subject<?, ?>> List<T> getSubjects(){
+        String unionid = getUnionid();
+        
+        /**
+         * 未登录
+         */
+        if(StringUtils.isBlank(unionid)){
+            return new ArrayList<T>();
+        }
+        
+        /**
+         * 返回主题列表
+         */
+        return (List<T>) getUserSubjects(unionid);
     }
     
     /**
