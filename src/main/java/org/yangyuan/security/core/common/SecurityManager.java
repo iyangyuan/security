@@ -19,6 +19,7 @@ public interface SecurityManager {
      * @param token 登录令牌
      * @param response http响应对象
      * @return 实例中必须包含[用户全局唯一id(unionid)]和[用户角色列表(roles)]
+     * @throws AuthenticationException 安全认证相关异常，具体含义参考子类定义
      */
     User login(SecurityToken token, HttpServletResponse response) throws AuthenticationException;
     

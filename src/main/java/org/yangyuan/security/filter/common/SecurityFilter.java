@@ -2,6 +2,8 @@ package org.yangyuan.security.filter.common;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.yangyuan.security.exception.FilterException;
+
 /**
  * 安全过滤器定义
  * @author yangyuan
@@ -25,7 +27,8 @@ public interface SecurityFilter {
      * <p>认证失败会抛出对应的异常，通过异常机制实现认证交互</p>
      * @param permission 认证表达式
      * @param request http请求对象
+     * @throws FilterException 安全过滤器相关异常，具体含义参考子类定义
      */
-    void doFilter(String permission, HttpServletRequest request);
+    void doFilter(String permission, HttpServletRequest request) throws FilterException;
     
 }

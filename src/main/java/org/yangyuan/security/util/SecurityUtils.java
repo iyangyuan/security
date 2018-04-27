@@ -303,6 +303,7 @@ public class SecurityUtils {
      * 登陆
      * @param token 认证令牌
      * @param response http响应对象
+     * @throws AuthenticationException 安全认证相关异常，具体含义参考子类定义
      */
     public static void login(SecurityToken token, HttpServletResponse response) throws AuthenticationException{
         ResourceManager.core().getSecurityManager().login(token, response);

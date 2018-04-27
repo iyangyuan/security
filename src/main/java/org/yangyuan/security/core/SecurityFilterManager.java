@@ -70,6 +70,7 @@ public class SecurityFilterManager {
      * 调用过滤器链
      * @param permission 认证表达式
      * @param request http请求对象
+     * @throws FilterException 安全过滤器相关异常，具体含义参考子类定义
      */
     public static void doFilter(String permission, HttpServletRequest request) throws FilterException{
         for(SecurityFilter filter : FILTERS_CHAIN){

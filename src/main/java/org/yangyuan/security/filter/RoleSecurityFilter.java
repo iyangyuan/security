@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.Role;
 import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
+import org.yangyuan.security.exception.FilterException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
 import org.yangyuan.security.filter.common.AbstractSecurityCacheFilter;
@@ -33,7 +34,7 @@ public class RoleSecurityFilter extends AbstractSecurityCacheFilter{
     }
 
     @Override
-    public void doFilter(String permission, HttpServletRequest request) {
+    public void doFilter(String permission, HttpServletRequest request) throws FilterException{
         DefaultSubject subject = SecurityUtils.getSubject();;
         
         /**

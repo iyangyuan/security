@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
+import org.yangyuan.security.exception.FilterException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.filter.common.SecurityFilter;
 
@@ -27,7 +28,7 @@ public class AnonSecurityFilter implements SecurityFilter{
     }
     
     @Override
-    public void doFilter(String permission, HttpServletRequest request) {
+    public void doFilter(String permission, HttpServletRequest request) throws FilterException{
         return;
     }
     

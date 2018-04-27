@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.BasicAuth;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
+import org.yangyuan.security.exception.FilterException;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.filter.common.AbstractSecurityCacheFilter;
@@ -45,7 +46,7 @@ public class BasicHttpAuthenticationSecurityFilter extends AbstractSecurityCache
     }
 
     @Override
-    public void doFilter(String permission, HttpServletRequest request) {
+    public void doFilter(String permission, HttpServletRequest request) throws FilterException{
         /**
          * 获取客户端授权凭证
          */
