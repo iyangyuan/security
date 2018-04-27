@@ -156,7 +156,7 @@ public class Role {
         int i;
         for(i = 0; i < roleName.length(); i++){
             c = roleName.charAt(i);
-            if(Character.isLetterOrDigit(c)){
+            if('{' != c){
                continue; 
             }
             break;
