@@ -16,6 +16,7 @@ import org.yangyuan.security.core.common.Session;
 import org.yangyuan.security.core.common.Subject;
 import org.yangyuan.security.dao.common.CacheSessionDao;
 import org.yangyuan.security.dao.common.StatisticalSessionDao;
+import org.yangyuan.security.exception.AuthenticationException;
 
 /**
  * 安全认证工具类
@@ -303,7 +304,7 @@ public class SecurityUtils {
      * @param token 认证令牌
      * @param response http响应对象
      */
-    public static void login(SecurityToken token, HttpServletResponse response){
+    public static void login(SecurityToken token, HttpServletResponse response) throws AuthenticationException{
         ResourceManager.core().getSecurityManager().login(token, response);
     }
     

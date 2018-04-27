@@ -12,6 +12,7 @@ import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.SecurityManager;
 import org.yangyuan.security.core.common.SecurityToken;
 import org.yangyuan.security.core.common.Subject;
+import org.yangyuan.security.exception.AuthenticationException;
 import org.yangyuan.security.exception.SecurityFilterAuthException;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
@@ -26,7 +27,7 @@ import org.yangyuan.security.util.SecurityUtils;
 public class DefaultSecurityManager implements SecurityManager{
 
     @Override
-    public User login(SecurityToken token, HttpServletResponse response) {
+    public User login(SecurityToken token, HttpServletResponse response) throws AuthenticationException {
         
         /**
          * 识别登录方式

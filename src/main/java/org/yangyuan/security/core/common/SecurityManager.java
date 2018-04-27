@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.yangyuan.security.bean.User;
+import org.yangyuan.security.exception.AuthenticationException;
 
 /**
  * 安全管理器定义
@@ -19,7 +20,7 @@ public interface SecurityManager {
      * @param response http响应对象
      * @return 实例中必须包含[用户全局唯一id(unionid)]和[用户角色列表(roles)]
      */
-    User login(SecurityToken token, HttpServletResponse response);
+    User login(SecurityToken token, HttpServletResponse response) throws AuthenticationException;
     
     /**
      * 登出(当前上下文)

@@ -5,7 +5,7 @@ package org.yangyuan.security.exception;
  * @author yangyuan
  * @date 2017年4月26日
  */
-public class SecurityFilterErrorException extends RuntimeException{
+public class SecurityFilterErrorException extends FilterException{
     private static final long serialVersionUID = 4317541537006535405L;
     
     public SecurityFilterErrorException() {

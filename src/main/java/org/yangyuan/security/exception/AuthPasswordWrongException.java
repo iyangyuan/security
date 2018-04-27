@@ -5,7 +5,7 @@ package org.yangyuan.security.exception;
  * @author yangyuan
  * @date 2017年4月26日
  */
-public class AuthPasswordWrongException extends RuntimeException{
+public class AuthPasswordWrongException extends AuthenticationException{
     private static final long serialVersionUID = 4317541537006535402L;
     
     public AuthPasswordWrongException() {

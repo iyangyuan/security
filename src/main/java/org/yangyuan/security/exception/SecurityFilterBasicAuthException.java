@@ -5,7 +5,7 @@ package org.yangyuan.security.exception;
  * @author yangyuan
  * @date 2018年4月12日
  */
-public class SecurityFilterBasicAuthException extends RuntimeException{
+public class SecurityFilterBasicAuthException extends FilterException{
     private static final long serialVersionUID = 8393729605818992366L;
     
     public SecurityFilterBasicAuthException() {

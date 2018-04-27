@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.yangyuan.security.exception.FilterException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.filter.common.SecurityFilter;
 import org.yangyuan.security.spring.SecuritySpringHook;
@@ -70,7 +71,7 @@ public class SecurityFilterManager {
      * @param permission 认证表达式
      * @param request http请求对象
      */
-    public static void doFilter(String permission, HttpServletRequest request){
+    public static void doFilter(String permission, HttpServletRequest request) throws FilterException{
         for(SecurityFilter filter : FILTERS_CHAIN){
             if(filter.approve(permission)){
                 filter.doFilter(permission, request);

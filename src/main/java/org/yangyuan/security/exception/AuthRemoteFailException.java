@@ -5,7 +5,7 @@ package org.yangyuan.security.exception;
  * @author yangyuan
  * @date 2018年3月16日
  */
-public class AuthRemoteFailException extends RuntimeException{
+public class AuthRemoteFailException extends AuthenticationException{
     private static final long serialVersionUID = -2498726338813641428L;
     
     public AuthRemoteFailException() {

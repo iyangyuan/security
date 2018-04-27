@@ -5,7 +5,7 @@ package org.yangyuan.security.exception;
  * @author yangyuan
  * @date 2018年4月25日
  */
-public class ConcurrentSubjectControlException extends RuntimeException{
+public class ConcurrentSubjectControlException extends AuthenticationException{
     private static final long serialVersionUID = 6681662640973349551L;
 
     public ConcurrentSubjectControlException() {
