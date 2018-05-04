@@ -27,6 +27,7 @@ public class ResourceManager {
     private static final Log log = LogFactory.getLog(ResourceManager.class);
     
     private static CommonResource commonResource;
+    private static CaptchaResource captchaResource;
     private static CacheResource cacheResource;
     private static CookieResource cookieResource;
     private static CoreResource coreResource;
@@ -42,6 +43,15 @@ public class ResourceManager {
         commonResource =
         CommonResource.custom()
                         .redisResourceFactory(redisResourceFactory)
+                        .build();
+        
+        captchaResource = 
+        CaptchaResource.custom()
+                        .normalExpireSecond(SecurityConfigUtils.cellInt("captcha.normal.expireSecond"))
+                        .normalMinIntervalSecond(SecurityConfigUtils.cellInt("captcha.normal.minIntervalSecond"))
+                        .imageExpireSecond(SecurityConfigUtils.cellInt("captcha.image.expireSecond"))
+                        .imageWrongPeriodSecond(SecurityConfigUtils.cellInt("captcha.image.wrongPeriodSecond"))
+                        .imagePeriodMaxWrongCount(SecurityConfigUtils.cellInt("captcha.image.periodMaxWrongCount"))
                         .build();
         
         cacheResource = 
@@ -117,6 +127,14 @@ public class ResourceManager {
      */
     public static CommonResource common(){
         return commonResource;
+    }
+    
+    /**
+     * 验证码资源
+     * @return
+     */
+    public static CaptchaResource captcha(){
+        return captchaResource;
     }
     
     /**
