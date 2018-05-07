@@ -8,9 +8,20 @@
 
 本框架删繁就简，以角色作为权限认证的唯一标准，并非传统的`RBAC`权限模型，在这里没有权限的概念，只有角色，角色就是权限，权限就是角色，因此本框架适合应用于互联网项目，尤其适合前后端分离模式下的后端接口。
 
-目前实现*匿名认证*、*基础的登陆认证*、*基于角色的权限管理*、*支持基于范围表达式的权限管理*、*第三方登陆*。
+## 特性
 
-本框架支持Session共享、分布式部署。
+* 高性能(设计简洁、内置缓存)
+* 基于注解
+* 安全的密码加密机制
+* 灵活的配置项
+* 易于集成、扩展
+* Session共享
+* 分布式部署
+* 实现*匿名认证*、*基础的登陆认证*、*基于角色的权限管理*、*基于范围表达式的权限管理*、*HTTP Basic Authentication*
+* 并发登录控制
+* 基础的在线会话管理
+* 验证码框架封装
+* 第三方登录集成
 
 ## 主要依赖
 
@@ -160,6 +171,26 @@ cache.timeToLiveSeconds=7200
 #LFU历史访问频率最低
 #FIFO先进先出
 cache.memoryStoreEvictionPolicy=LRU
+
+
+
+#普通验证码有效期
+#单位s
+captcha.normal.expireSecond=900
+#普通验证码多次发送最短时间间隔
+#单位s
+captcha.normal.minIntervalSecond=50
+#图形验证码有效期
+#单位s
+captcha.image.expireSecond=600
+#图形验证码错误统计周期
+#单位s
+captcha.image.wrongPeriodSecond=60
+#图形验证码统计周期内允许最大错误次数
+captcha.image.periodMaxWrongCount=3
+
+
+
 ```
 
 > 具体业务类实现
@@ -172,6 +203,10 @@ cache.memoryStoreEvictionPolicy=LRU
 `security.properties`文件中配置的所有类型，可以配置成完整类名(包名+类名)，也可以配置成`spring IOC`中的`Bean`名称，根据业务情况自由选择。
 
 一般来讲，除非需要自己扩展框架，否则只需要实现具体业务类，然后修改一下cookie相关配置即可，其他配置项均可使用默认配置。
+
+> 验证码模块使用说明
+
+待续...
 
 ## 使用
 
