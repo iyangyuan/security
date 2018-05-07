@@ -190,7 +190,6 @@ captcha.image.wrongPeriodSecond=60
 captcha.image.periodMaxWrongCount=3
 
 
-
 ```
 
 > 具体业务类实现
@@ -204,9 +203,20 @@ captcha.image.periodMaxWrongCount=3
 
 一般来讲，除非需要自己扩展框架，否则只需要实现具体业务类，然后修改一下cookie相关配置即可，其他配置项均可使用默认配置。
 
-> 验证码模块使用说明
+> 验证码模块使用介绍
 
-待续...
+验证码模块只实现了公共逻辑，并没有实现具体的发送逻辑，目的是留给使用者更多的操作空间，使得框架具有更强的适应性。
+
+如果需要使用验证码模块，最佳实践如下：
+
+* 如果需要使用**手机短信**、**邮箱邮件**验证码，则定义一个抽象类，假设名称为`AbstractPhoneEmailSecurityCaptchaService`，继承模块中的`AbstractPhoneEmailSecurityCaptcha`，实现`newCode`、`sendToPhone`、`sendToEmail`方法，这三个方法是公共方法，但必须交给使用者实现，因为不同的项目发送短信、邮件的方式不尽相同，生成验证码的规则也不尽相同。然后在项目中以`AbstractPhoneEmailSecurityCaptchaService`为基础，派生出具体的业务类，比如发送注册验证码的业务类`RegisterCaptchaService`，继承`AbstractPhoneEmailSecurityCaptchaService`，然后实现`name`、`title`、`content`方法即可。
+* 如果需要使用图形验证码，则定义一个抽象类，假设名称为`AbstractSecurityImageCaptchaService`，继承模块中的`AbstractSecurityImageCaptcha`，实现`newCode`方法，生成的验证码取决于实际项目中图形生成器的能力，避免生成无法被图形生成器识别的字符，当然，图形生成器您自己实现，看着办。然后在项目中以`AbstractSecurityImageCaptchaService`为基础，派生出具体的业务类，比如登陆图形验证码的业务类`LoginImageCaptchaService`，继承`AbstractSecurityImageCaptchaService`，然后实现`name`方法即可。 
+
+通过以上描述可以看出，验证码模块只是封装了繁琐的验证码发送标记、验证等操作，并不干预具体的发送实现。
+
+使用者封装好适合自己的抽象基类后，不论任何业务，只需要继承抽象基类即可轻松实现，并天然实现业务之间的隔离。
+
+总结一下，使用者只需要关注*发送手机短信*、*发送邮件*、*生成验证码文本*、*生成验证码图片*具体实现，然后根据具体业务设定好*验证码标题*、*验证码内容*、*业务名称(用来隔离业务)*即可。
 
 ## 使用
 
