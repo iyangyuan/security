@@ -11,7 +11,8 @@ import org.yangyuan.security.core.common.SecurityToken;
 import org.yangyuan.security.exception.AuthRemoteFailException;
 import org.yangyuan.security.http.client.HttpClient;
 import org.yangyuan.security.http.response.SimpleResponse;
-import org.yangyuan.security.realm.bean.UserAdaptor;
+import org.yangyuan.security.realm.bean.RemoteUser;
+import org.yangyuan.security.realm.bean.RemoteUserAdaptor;
 import org.yangyuan.security.realm.common.AbstractRealm;
 import org.yangyuan.security.realm.common.Realm;
 
@@ -90,20 +91,20 @@ public class RemoteRealm extends AbstractRealm{
                 if(bodyJson.getIntValue("ret") != 0){
                     throw new AuthRemoteFailException("无法获取用户信息，授权失败");
                 }
-                UserAdaptor userAdaptor = new UserAdaptor();
-                userAdaptor.setOpenid(unionid);
-                userAdaptor.setNickname(bodyJson.getString("nickname"));
+                String nickname = bodyJson.getString("nickname");
+                String portrait = null;
                 if(StringUtils.isNoneBlank(bodyJson.getString("figureurl_qq_1"))){
-                    userAdaptor.setPortrait(bodyJson.getString("figureurl_qq_1"));
+                    portrait = bodyJson.getString("figureurl_qq_1");
                 }
                 if(StringUtils.isNoneBlank(bodyJson.getString("figureurl_qq_2"))){
-                    userAdaptor.setPortrait(bodyJson.getString("figureurl_qq_2"));
+                    portrait = bodyJson.getString("figureurl_qq_2");
                 }
                 
                 /**
-                 * 访问适配器
+                 * 适配数据
                  */
-                userAdaptor = ResourceManager.dao().getRemoteRealmAdaptor().selectByUser(userAdaptor);
+                RemoteUser remoteUser = new RemoteUser(nickname, portrait, unionid);
+                RemoteUserAdaptor userAdaptor = ResourceManager.dao().getRemoteRealmAdaptor().selectByRemoteUser(remoteUser);
                 
                 return getUser(userAdaptor.getUnionid(), userAdaptor.getRoles());
             } catch (Exception e) {
@@ -139,15 +140,15 @@ public class RemoteRealm extends AbstractRealm{
                 if(bodyJson.containsKey("errcode")){
                     throw new AuthRemoteFailException(bodyJson.getString("errmsg") + "，授权失败");
                 }
-                UserAdaptor userAdaptor = new UserAdaptor();
-                userAdaptor.setOpenid(bodyJson.getString("unionid"));
-                userAdaptor.setNickname(bodyJson.getString("nickname"));
-                userAdaptor.setPortrait(bodyJson.getString("headimgurl").replace("\\", ""));
+                String unionid = bodyJson.getString("unionid");
+                String nickname = bodyJson.getString("nickname");
+                String portrait = bodyJson.getString("headimgurl").replace("\\", "");
                 
                 /**
                  * 访问适配器
                  */
-                userAdaptor = ResourceManager.dao().getRemoteRealmAdaptor().selectByUser(userAdaptor);
+                RemoteUser remoteUser = new RemoteUser(nickname, portrait, unionid);
+                RemoteUserAdaptor userAdaptor = ResourceManager.dao().getRemoteRealmAdaptor().selectByRemoteUser(remoteUser);
                 
                 return getUser(userAdaptor.getUnionid(), userAdaptor.getRoles());
             } catch (Exception e) {
@@ -182,15 +183,15 @@ public class RemoteRealm extends AbstractRealm{
                 if(bodyJson.containsKey("error_code")){
                     throw new AuthRemoteFailException(bodyJson.getString("error") + "，授权失败");
                 }
-                UserAdaptor userAdaptor = new UserAdaptor();
-                userAdaptor.setOpenid(String.valueOf(bodyJson.getLongValue("id")));
-                userAdaptor.setNickname(bodyJson.getString("screen_name"));
-                userAdaptor.setPortrait(bodyJson.getString("avatar_large"));
+                String unionid = String.valueOf(bodyJson.getLongValue("id"));
+                String nickname = bodyJson.getString("screen_name");
+                String portrait = bodyJson.getString("avatar_large");
                 
                 /**
                  * 访问适配器
                  */
-                userAdaptor = ResourceManager.dao().getRemoteRealmAdaptor().selectByUser(userAdaptor);
+                RemoteUser remoteUser = new RemoteUser(nickname, portrait, unionid);
+                RemoteUserAdaptor userAdaptor = ResourceManager.dao().getRemoteRealmAdaptor().selectByRemoteUser(remoteUser);
                 
                 return getUser(userAdaptor.getUnionid(), userAdaptor.getRoles());
             } catch (Exception e) {

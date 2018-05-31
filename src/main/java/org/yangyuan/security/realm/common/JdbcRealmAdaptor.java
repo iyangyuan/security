@@ -1,6 +1,7 @@
 package org.yangyuan.security.realm.common;
 
-import org.yangyuan.security.realm.bean.UserAdaptor;
+import org.yangyuan.security.realm.bean.JdbcUser;
+import org.yangyuan.security.realm.bean.JdbcUserAdaptor;
 
 /**
  * 持久化数据源适配器定义
@@ -8,17 +9,10 @@ import org.yangyuan.security.realm.bean.UserAdaptor;
  * @date 2018年3月15日
  */
 public interface JdbcRealmAdaptor {
-    
     /**
-     * 根据用户登录账号查询用户信息
-     * @param username 登陆账号
-     * @return 
-     *      <ul>
-     *          <li>password</li>
-     *          <li>unionid</li>
-     *          <li>roles</li>
-     *      </ul>
+     * 适配持久化用户数据
+     * @param user 持久化用户数据
+     * @return 持久化用户数据适配器
      */
-    UserAdaptor selectByUsername(String username);
-    
+    JdbcUserAdaptor selectByJdbcUser(JdbcUser user);
 }

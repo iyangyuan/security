@@ -7,7 +7,8 @@ import org.yangyuan.security.core.common.PasswordManager;
 import org.yangyuan.security.core.common.SecurityToken;
 import org.yangyuan.security.exception.AuthPasswordWrongException;
 import org.yangyuan.security.exception.AuthUsernameNotFoundException;
-import org.yangyuan.security.realm.bean.UserAdaptor;
+import org.yangyuan.security.realm.bean.JdbcUser;
+import org.yangyuan.security.realm.bean.JdbcUserAdaptor;
 import org.yangyuan.security.realm.common.AbstractRealm;
 
 /**
@@ -20,7 +21,12 @@ public class JdbcRealm extends AbstractRealm{
     @Override
     public User getUser(SecurityToken token) {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        UserAdaptor userAdaptor = ResourceManager.dao().getJdbcRealmAdaptor().selectByUsername(usernamePasswordToken.getUsername());
+        
+        /**
+         * 适配数据
+         */
+        JdbcUser jdbcUser = new JdbcUser(usernamePasswordToken.getUsername());
+        JdbcUserAdaptor userAdaptor = ResourceManager.dao().getJdbcRealmAdaptor().selectByJdbcUser(jdbcUser);
         
         /**
          * 用户不存在
