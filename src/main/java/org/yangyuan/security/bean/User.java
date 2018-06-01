@@ -10,9 +10,24 @@ import java.util.List;
 public class User {
     
     /**
+     * 构造方法
+     * @param unionid 用户全局唯一id
+     * @param roles 用户角色列表
+     */
+    public User(String unionid, List<Role> roles){
+        this.unionid = unionid;
+        this.roles = roles;
+    }
+    
+    /**
      * 用户全局唯一id
      */
-    private String unionid;
+    private final String unionid;
+    
+    /**
+     * 用户角色列表
+     */
+    private final List<Role> roles;
     
     /**
      * 用户昵称
@@ -24,19 +39,14 @@ public class User {
      */
     private String portrait;
     
-    /**
-     * 用户角色列表
-     */
-    List<Role> roles;
-    
     public String getUnionid() {
         return unionid;
     }
-
-    public void setUnionid(String unionid) {
-        this.unionid = unionid;
+    
+    public List<Role> getRoles() {
+        return roles;
     }
-
+    
     public String getNickname() {
         return nickname;
     }
@@ -53,14 +63,6 @@ public class User {
         this.portrait = portrait;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-    
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(256);

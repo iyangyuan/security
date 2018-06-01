@@ -21,16 +21,13 @@ public abstract class AbstractRealm implements Realm{
      * @return 认证系统用户，实例中必须包含[用户全局唯一id(unionid)]和[用户角色列表(roles)]
      */
     protected User getUser(String unionid, String roles){
-        User user = new User();
-        user.setUnionid(unionid);
         List<Role> _roles = new ArrayList<Role>();
         if(StringUtils.isNotBlank(roles)){
             String permission = "roles[" + roles + "]";
             _roles = Role.parseRole(permission);
         }
-        user.setRoles(_roles);
         
-        return user;
+        return new User(unionid, _roles);
     }
     
 }
