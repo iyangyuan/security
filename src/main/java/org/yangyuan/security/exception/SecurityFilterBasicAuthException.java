@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.FilterException;
+
 /**
  * http basic authentication认证失败异常
  * @author yangyuan

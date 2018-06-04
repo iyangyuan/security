@@ -1,4 +1,4 @@
-package org.yangyuan.security.exception;
+package org.yangyuan.security.exception.common;
 
 /**
  * 安全认证相关异常

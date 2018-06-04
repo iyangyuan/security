@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.AuthenticationException;
+
 /**
  * 并发安全认证主题控制异常
  * @author yangyuan

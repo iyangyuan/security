@@ -1,4 +1,4 @@
-package org.yangyuan.security.exception;
+package org.yangyuan.security.exception.common;
 
 /**
  * 安全过滤器异常

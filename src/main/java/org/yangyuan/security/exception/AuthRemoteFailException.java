@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.AuthenticationException;
+
 /**
  * 第三方授权失败异常
  * @author yangyuan

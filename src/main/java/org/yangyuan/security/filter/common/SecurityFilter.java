@@ -2,7 +2,7 @@ package org.yangyuan.security.filter.common;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.yangyuan.security.exception.FilterException;
+import org.yangyuan.security.exception.common.FilterException;
 
 /**
  * 安全过滤器定义

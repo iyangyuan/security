@@ -10,8 +10,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.yangyuan.security.exception.FilterException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
+import org.yangyuan.security.exception.common.FilterException;
 import org.yangyuan.security.filter.common.SecurityFilter;
 import org.yangyuan.security.spring.SecuritySpringHook;
 import org.yangyuan.security.util.SecuritySort;

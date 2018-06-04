@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.AuthenticationException;
+
 /**
  * 用户不存在异常
  * @author yangyuan

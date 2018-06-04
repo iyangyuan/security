@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.CaptchaException;
+
 /**
  * 发送验证码时发现未知的账号类型
  * <p>目前仅支持手机号、邮箱</p>

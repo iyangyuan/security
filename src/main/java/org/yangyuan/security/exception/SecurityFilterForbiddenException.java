@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.FilterException;
+
 /**
  * 角色认证失败异常
  * @author yangyuan

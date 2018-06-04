@@ -3,7 +3,7 @@ package org.yangyuan.security.captcha.common;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.config.ResourceManager;
-import org.yangyuan.security.exception.CaptchaException;
+import org.yangyuan.security.exception.common.CaptchaException;
 
 import redis.clients.jedis.Jedis;
 

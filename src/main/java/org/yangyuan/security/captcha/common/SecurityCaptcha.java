@@ -1,6 +1,6 @@
 package org.yangyuan.security.captcha.common;
 
-import org.yangyuan.security.exception.CaptchaException;
+import org.yangyuan.security.exception.common.CaptchaException;
 
 /**
  * 安全认证验证码定义

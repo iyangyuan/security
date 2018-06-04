@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.FilterException;
+
 /**
  * 认证过程出现严重bug，无法继续进行异常
  * @author yangyuan

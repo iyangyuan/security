@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.CaptchaException;
+
 /**
  * 验证码发送频率过快异常
  * @author yangyuan

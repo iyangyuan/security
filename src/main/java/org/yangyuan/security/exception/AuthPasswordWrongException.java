@@ -1,5 +1,7 @@
 package org.yangyuan.security.exception;
 
+import org.yangyuan.security.exception.common.AuthenticationException;
+
 /**
  * 密码不正确异常
  * @author yangyuan

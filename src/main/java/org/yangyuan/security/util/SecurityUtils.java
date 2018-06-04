@@ -16,7 +16,7 @@ import org.yangyuan.security.core.common.Session;
 import org.yangyuan.security.core.common.Subject;
 import org.yangyuan.security.dao.common.CacheSessionDao;
 import org.yangyuan.security.dao.common.StatisticalSessionDao;
-import org.yangyuan.security.exception.AuthenticationException;
+import org.yangyuan.security.exception.common.AuthenticationException;
 
 /**
  * 安全认证工具类

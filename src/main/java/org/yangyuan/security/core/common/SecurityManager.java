@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.yangyuan.security.bean.User;
-import org.yangyuan.security.exception.AuthenticationException;
+import org.yangyuan.security.exception.common.AuthenticationException;
 
 /**
  * 安全管理器定义

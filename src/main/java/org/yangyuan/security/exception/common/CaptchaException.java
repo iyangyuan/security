@@ -1,4 +1,4 @@
-package org.yangyuan.security.exception;
+package org.yangyuan.security.exception.common;
 
 /**
  * 验证码相关异常

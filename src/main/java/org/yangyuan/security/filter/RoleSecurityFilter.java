@@ -8,9 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.Role;
 import org.yangyuan.security.core.DefaultSubject;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
-import org.yangyuan.security.exception.FilterException;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.exception.SecurityFilterForbiddenException;
+import org.yangyuan.security.exception.common.FilterException;
 import org.yangyuan.security.filter.common.AbstractSecurityCacheFilter;
 import org.yangyuan.security.util.SecurityUtils;
 
