@@ -1,5 +1,6 @@
 package org.yangyuan.security.realm.common;
 
+import org.yangyuan.security.exception.common.AuthenticationBusinessException;
 import org.yangyuan.security.realm.bean.RemoteUser;
 import org.yangyuan.security.realm.bean.RemoteUserAdaptor;
 
@@ -13,6 +14,7 @@ public interface RemoteRealmAdaptor {
      * 适配第三方授权用户数据
      * @param user 第三方授权用户数据
      * @return 第三方授权用户数据适配器
+     * @throws AuthenticationBusinessException
      */
-    RemoteUserAdaptor selectByRemoteUser(RemoteUser user);
+    RemoteUserAdaptor selectByRemoteUser(RemoteUser user) throws AuthenticationBusinessException;
 }
