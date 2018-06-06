@@ -23,14 +23,14 @@
 	</properties>
 
 	<dependencies>
-	    
-	    <!-- springframework -->
-	    <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-version}</version>
-        </dependency>
-	
+
+		<!-- springframework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+
 		<!-- apache commons -->
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -47,18 +47,18 @@
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec-version}</version>
 		</dependency>
-		
-		 <!-- http -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpclient-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>${httpclient-version}</version>
-        </dependency>
+
+		<!-- http -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpclient-version}</version>
+		</dependency>
 
 		<!-- ehcache -->
 		<dependency>
@@ -73,13 +73,13 @@
 			<artifactId>jedis</artifactId>
 			<version>${redis-version}</version>
 		</dependency>
-        
-        <!-- json -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson-version}</version>
-        </dependency>
+
+		<!-- json -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson-version}</version>
+		</dependency>
 
 	</dependencies>
 </project>
