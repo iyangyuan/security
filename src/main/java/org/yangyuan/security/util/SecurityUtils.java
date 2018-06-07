@@ -50,6 +50,22 @@ public class SecurityUtils {
     }
     
     /**
+     * 是否使用Remember Me模式登陆
+     * @return 
+     *        <p><b>true</b> 用户勾选remember me，记住登陆状态</p>
+     *        <p><b>false</b> 其他情况视为临时登陆，关闭浏览器窗口后自动退出登陆</p>
+     */
+    public static boolean isRemember(){
+        Session<String, Object> session = SecurityUtils.getSession();
+        
+        if(session == null){
+            return false;
+        }
+        
+        return (boolean) session.get(DefaultSession.SESSION_REMEMBER);
+    }
+    
+    /**
      * 获取当前上下文中的主题
      * @return 如果用户未登录，返回null
      */

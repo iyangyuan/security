@@ -63,6 +63,7 @@ public class DefaultSecurityManager implements SecurityManager{
         DefaultSession session = (DefaultSession) subject.getSession();
         session.set(DefaultSession.SESSION_UNIONID, user.getUnionid());
         session.set(DefaultSession.SESSION_ROLES, user.getRoles());
+        session.set(DefaultSession.SESSION_REMEMBER, token.isRemember());
         ResourceManager.dao().getRedisSessionDao().doCreate(subject);  //持久化到redis
         ResourceManager.dao().getEhcacheSessionDao().doCreate(subject);  //缓存
         SessionManager.setSubject(subject);  //写入会话
@@ -71,11 +72,10 @@ public class DefaultSecurityManager implements SecurityManager{
          * 设置客户端响应cookie
          */
         Cookie cookie;
-        cookie = new PrincipalPersistentCookie(subject.getPrincipal()).toHttpCookie();
-        if(token instanceof UsernamePasswordToken){  //本地账号密码登录
-            if(!((UsernamePasswordToken) token).isRemember()){  //临时登录
-                cookie = new PrincipalSessionCookie(subject.getPrincipal()).toHttpCookie();
-            }
+        if(token.isRemember()){ //记住登陆状态
+            cookie = new PrincipalPersistentCookie(subject.getPrincipal()).toHttpCookie();
+        }else{  //临时登录
+            cookie = new PrincipalSessionCookie(subject.getPrincipal()).toHttpCookie();
         }
         response.addCookie(cookie);
         

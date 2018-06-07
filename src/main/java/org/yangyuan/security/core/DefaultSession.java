@@ -32,6 +32,11 @@ public class DefaultSession implements Session<String, Object>{
     public static final String SESSION_ROLES = "_roles";
     
     /**
+     * 会话中保存的记住登陆状态域
+     */
+    public static final String SESSION_REMEMBER = "_remember";
+    
+    /**
      * 会话数据容器
      */
     private Map<String, Object> container = new HashMap<String, Object>();
