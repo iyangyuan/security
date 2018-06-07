@@ -62,7 +62,12 @@ public class SecurityUtils {
             return false;
         }
         
-        return (boolean) session.get(DefaultSession.SESSION_REMEMBER);
+        Object remember = session.get(DefaultSession.SESSION_REMEMBER);
+        if(remember == null){
+            return true;  //默认值
+        }
+        
+        return (boolean) remember;
     }
     
     /**
