@@ -59,7 +59,7 @@ public class DefaultSession implements Session<String, Object>{
             List<Role> roles = (List<Role>) this.container.get(SESSION_ROLES);
             map.put(SESSION_ROLES, "");
             if(roles.size() > 0){
-                map.put(SESSION_ROLES, Role.toPermission(roles));
+                map.put(SESSION_ROLES, Role.getRoles(roles));
             }
             
             String json = JSON.toJSONString(map);
@@ -86,7 +86,7 @@ public class DefaultSession implements Session<String, Object>{
             String roles = (String) session.container.get(SESSION_ROLES);
             session.container.put(SESSION_ROLES, new ArrayList<Role>());
             if(StringUtils.isNotBlank(roles)){
-                session.container.put(SESSION_ROLES, Role.parseRole(roles));
+                session.container.put(SESSION_ROLES, Role.parseRoles(roles));
             }
             
             return session;

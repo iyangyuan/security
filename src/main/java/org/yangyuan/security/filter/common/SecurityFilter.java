@@ -2,6 +2,7 @@ package org.yangyuan.security.filter.common;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.yangyuan.security.bean.Permission;
 import org.yangyuan.security.exception.common.FilterException;
 
 /**
@@ -19,7 +20,7 @@ public interface SecurityFilter {
      *      <br>
      *      <b>false</b> 此过滤器不能够处理指定的认证表达式
      */
-    boolean approve(String permission);
+    boolean approve(Permission permission);
     
     /**
      * 认证
@@ -29,6 +30,6 @@ public interface SecurityFilter {
      * @param request http请求对象
      * @throws FilterException 安全过滤器相关异常，具体含义参考子类定义
      */
-    void doFilter(String permission, HttpServletRequest request) throws FilterException;
+    void doFilter(Permission permission, HttpServletRequest request) throws FilterException;
     
 }

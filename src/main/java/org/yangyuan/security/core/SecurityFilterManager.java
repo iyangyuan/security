@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.yangyuan.security.bean.Permission;
 import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.exception.common.FilterException;
 import org.yangyuan.security.filter.common.SecurityFilter;
@@ -73,9 +75,14 @@ public class SecurityFilterManager {
      * @throws FilterException 安全过滤器相关异常，具体含义参考子类定义
      */
     public static void doFilter(String permission, HttpServletRequest request) throws FilterException{
+        if(StringUtils.isBlank(permission)){
+            throw new SecurityFilterErrorException("permission is blank");
+        }
+        
+        Permission p = Permission.valueOf(permission);
         for(SecurityFilter filter : FILTERS_CHAIN){
-            if(filter.approve(permission)){
-                filter.doFilter(permission, request);
+            if(filter.approve(p)){
+                filter.doFilter(p, request);
                 return;
             }
         }

@@ -35,25 +35,19 @@ public class BasicAuth {
     
     /**
      * 解析http basic authentication表达式
-     * @param permission http basic authentication表达式
+     * @param users http basic authentication表达式
      * @return http basic authentication认证模型实例
      */
-    public static BasicAuth parseBasicAuth(String permission){
+    public static BasicAuth parseBasicAuth(String users){
         try {
-            /**
-             * 规范格式
-             */
-            permission = permission.replace(" ", "");
-            permission = permission.substring(6, permission.length() - 1);
-            
             /**
              * 解析授权
              */
-            String[] users = permission.split(",");
+            String[] _users = users.split(",");
             List<String> authorizations = new ArrayList<String>();
             String authorization;
             byte[] bytes;
-            for(String user : users){
+            for(String user : _users){
                 bytes = user.getBytes(ResourceManager.core().getCharset());
                 bytes = Base64.encodeBase64(bytes);
                 authorization = new String(bytes, ResourceManager.core().getCharset());

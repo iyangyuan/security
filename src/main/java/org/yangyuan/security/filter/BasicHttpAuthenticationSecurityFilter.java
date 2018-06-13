@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.BasicAuth;
+import org.yangyuan.security.bean.Permission;
 import org.yangyuan.security.core.annotation.SecurityFilterComponent;
 import org.yangyuan.security.exception.SecurityFilterBasicAuthException;
-import org.yangyuan.security.exception.SecurityFilterErrorException;
 import org.yangyuan.security.exception.common.FilterException;
 import org.yangyuan.security.filter.common.AbstractSecurityCacheFilter;
 
@@ -37,16 +37,12 @@ public class BasicHttpAuthenticationSecurityFilter extends AbstractSecurityCache
     protected static final String AUTHENTICATE_SCHEME = HttpServletRequest.BASIC_AUTH;
     
     @Override
-    public boolean approve(String permission) {
-        if(StringUtils.isBlank(permission)){
-            throw new SecurityFilterErrorException("permission is blank");
-        }
-        
-        return permission.toLowerCase().startsWith(FILETER_NAME);
+    public boolean approve(Permission permission) {
+        return permission.getName().toLowerCase().startsWith(FILETER_NAME);
     }
 
     @Override
-    public void doFilter(String permission, HttpServletRequest request) throws FilterException{
+    public void doFilter(Permission permission, HttpServletRequest request) throws FilterException{
         /**
          * 获取客户端授权凭证
          */
@@ -63,10 +59,10 @@ public class BasicHttpAuthenticationSecurityFilter extends AbstractSecurityCache
         /**
          * 解析
          */
-        BasicAuth basicAuth = cached(permission);  //优先从缓存中获取
+        BasicAuth basicAuth = cached(permission.getPermission());  //优先从缓存中获取
         if(basicAuth == null){  //缓存未命中
-            basicAuth = BasicAuth.parseBasicAuth(permission);  //解析
-            caching(permission, basicAuth);  //缓存
+            basicAuth = BasicAuth.parseBasicAuth(permission.getValue());  //解析
+            caching(permission.getPermission(), basicAuth);  //缓存
         }
         
         /**

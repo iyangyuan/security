@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 用户角色(不可变对象)
+ * 用户角色模型
  * @author yangyuan
  * @date 2017年4月26日
  */
@@ -50,16 +50,46 @@ public class Role {
         this.comparator = comparator;
     }
     
+    /**
+     * 获取角色名称
+     * @return 角色名称
+     */
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * 获取角色级别
+     * @return 角色级别
+     */
     public int getLevel() {
         return level;
     }
     
+    /**
+     * 获取角色操作标识符
+     * @return 角色操作标识符
+     */
     public String getComparator() {
         return comparator;
+    }
+    
+    /**
+     * 获取角色字符串
+     * @return 角色字符串
+     */
+    public String getRole() {
+        StringBuilder builder = new StringBuilder(32);
+        
+        builder.append(this.getComparator());
+        builder.append(this.getName());
+        if(this.getLevel() != 0){
+            builder.append("{");
+            builder.append(this.getLevel());
+            builder.append("}");
+        }
+        
+        return new String(builder);
     }
     
     /**
@@ -115,31 +145,23 @@ public class Role {
     
     /**
      * 角色对象列表转换成角色表达式，可以理解为序列化
-     * <p><b>example:</b> roles[a, >b{2}, c{3}]</p>
+     * <p><b>example:</b> a, >b{2}, c{3}</p>
      * @param roles 角色列表
      * @return 角色表达式
      */
-    public static String toPermission(List<Role> roles){
-        StringBuilder permissionBuilder = new StringBuilder(64);
-        permissionBuilder.append("roles[");
+    public static String getRoles(List<Role> roles){
+        StringBuilder permissionBuilder = new StringBuilder(128);
         
         int i = 0;
         for(Role role : roles){
             i++;
             
-            permissionBuilder.append(role.getComparator());
-            permissionBuilder.append(role.getName());
-            if(role.getLevel() != 0){
-                permissionBuilder.append("{");
-                permissionBuilder.append(role.getLevel());
-                permissionBuilder.append("}");
-            }
+            permissionBuilder.append(role.getRole());
+            
             if(i < roles.size()){
                 permissionBuilder.append(",");
             }
         }
-        
-        permissionBuilder.append("]");
         
         return permissionBuilder.toString();
     }
@@ -148,45 +170,39 @@ public class Role {
      * 获取简写角色名称
      * <br>
      * <b>Example: </b>vip{1} -> vip
-     * @param roleName 角色名称
+     * @param role 角色名称
      * @return 简写角色名称
      */
-    public static String simpleRoleName(String roleName){
-        char c;
-        int i;
-        for(i = 0; i < roleName.length(); i++){
-            c = roleName.charAt(i);
-            if('{' != c){
-               continue; 
-            }
-            break;
-        }
-        
-        return roleName.substring(0, i);
+    public static String simpleRoleName(String role){
+        return parseRole(role).getName();
+    }
+    
+    /**
+     * 角色表达式转换成角色对象，可以理解为反序列化
+     * @param role 角色表达式
+     * @return 角色对象
+     */
+    public static Role parseRole(String role){
+        return parseRoles(role).get(0);
     }
     
     /**
      * 角色表达式转换成角色对象列表，可以理解为反序列化
-     * @param permission 角色表达式
+     * @param roles 角色表达式
      * @return 角色对象列表
      */
-    public static List<Role> parseRole(String permission){
+    public static List<Role> parseRoles(String roles){
         List<Role> roleList = new ArrayList<Role>();
-        /**
-         * 格式规范
-         */
-        permission = permission.replace(" ", "");
-        permission = permission.substring(6, permission.length() - 1);
         
         /**
          * 提取角色
          */
-        String[] roles = permission.split(",");
+        String[] roleArray = roles.split(",");
         String name;
         int level;
         String comparator;
         String[] units;
-        for(String role : roles){
+        for(String role : roleArray){
             name = StringUtils.EMPTY;  //重置角色名
             level = 0;  //重置角色级别
             comparator = StringUtils.EMPTY;  //重置角色操作标识符
@@ -231,21 +247,7 @@ public class Role {
     
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(32);
-        
-        if(StringUtils.isNotBlank(this.comparator)){
-            builder.append(this.comparator);
-        }
-        
-        builder.append(this.name);
-        
-        if(this.level != 0){
-            builder.append("{");
-            builder.append(this.level);
-            builder.append("}");
-        }
-        
-        return new String(builder);
+        return this.getRole();
     }
     
 }

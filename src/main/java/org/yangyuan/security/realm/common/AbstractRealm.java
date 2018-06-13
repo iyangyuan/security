@@ -23,8 +23,7 @@ public abstract class AbstractRealm implements Realm{
     protected User getUser(String unionid, String roles){
         List<Role> _roles = new ArrayList<Role>();
         if(StringUtils.isNotBlank(roles)){
-            String permission = "roles[" + roles + "]";
-            _roles = Role.parseRole(permission);
+            _roles = Role.parseRoles(roles);
         }
         
         return new User(unionid, _roles);
