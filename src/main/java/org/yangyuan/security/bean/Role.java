@@ -233,10 +233,10 @@ public class Role {
             name = units[0];
             
             /**
-             * 表达式指定了操作标识符，但未指定级别的非法情况，例如：roles[>a]
+             * 表达式指定了操作标识符，但未指定级别的非法情况，例如：>a
              */
             if(level == 0 && !comparator.equals(StringUtils.EMPTY)){
-                throw new RuntimeException("permission express role: " + role + ", you had declare comparator '" + comparator + "', but didn't declare level '{?}', the right express should be like this: roles[>vip{2}]");
+                throw new SecurityException("permission express role: " + role + ", you had declare comparator '" + comparator + "', but didn't declare level '{?}', the right express should be like this: >vip{2}");
             }
             
             roleList.add(new Role(name, level, comparator));

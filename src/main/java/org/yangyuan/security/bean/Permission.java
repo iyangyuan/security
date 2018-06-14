@@ -98,13 +98,13 @@ public class Permission {
          * 有效性预测
          */
         if(offsetPrefix * offsetSuffix == 0){  //缺少表达式名称，例如：[xxx]
-            throw new RuntimeException("permission missing name");
+            throw new SecurityException("permission missing name");
         }
         if(offsetPrefix * offsetSuffix < 0){  //缺少值开始或结束标记，例如：aa[bb、aabb]、aa]bb[
-            throw new RuntimeException("permission missing '[' or ']'");
+            throw new SecurityException("permission missing '[' or ']'");
         }
         if(offsetSuffix - offsetPrefix == 1){  //缺少表达式值，例如：aa[]。如果不需要表达式值，直接写aa即可。
-            throw new RuntimeException("permission missing value");
+            throw new SecurityException("permission missing value");
         }
         
         /**

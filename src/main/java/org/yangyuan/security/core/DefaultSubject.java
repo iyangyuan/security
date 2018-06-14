@@ -154,7 +154,7 @@ public final class DefaultSubject implements Subject<String, Object>{
             
             return bytes;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     
@@ -180,7 +180,7 @@ public final class DefaultSubject implements Subject<String, Object>{
             
             return DefaultSubject.getInstance(subjectJson.getString(PRINCIPAL_SERIALIZABLE_NAME), subjectJson.getBooleanValue(VALID_SERIALIZABLE_NAME), session);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     

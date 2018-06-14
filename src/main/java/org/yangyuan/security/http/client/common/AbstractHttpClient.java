@@ -105,7 +105,7 @@ public abstract class AbstractHttpClient {
         try {
             entity = new StringEntity(content, options.getRequestBodyCharset());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
         entity.setContentType(options.getContentType());
         request.setEntity(entity);
@@ -138,7 +138,7 @@ public abstract class AbstractHttpClient {
         try {
             entity = new StringEntity(content, options.getRequestBodyCharset());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
         entity.setContentType(options.getContentType());
         request.setEntity(entity);
@@ -207,7 +207,7 @@ public abstract class AbstractHttpClient {
                 simpleResponse.setBody(EntityUtils.toByteArray(entity));
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         } finally {
             try {
                 if(response != null){

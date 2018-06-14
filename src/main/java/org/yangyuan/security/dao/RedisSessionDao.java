@@ -134,7 +134,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
             
             return subject;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         } finally {
             if(redis != null){
                 redis.close();
@@ -167,7 +167,7 @@ public class RedisSessionDao implements CacheSessionDao<String, Object>, Statist
             online(subject.getPrincipal(), redis);
             
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         } finally {
             if(redis != null){
                 redis.close();

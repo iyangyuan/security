@@ -65,7 +65,7 @@ public class DefaultSession implements Session<String, Object>{
             String json = JSON.toJSONString(map);
             return json.getBytes(ResourceManager.core().getCharset());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     
@@ -91,7 +91,7 @@ public class DefaultSession implements Session<String, Object>{
             
             return session;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     
@@ -110,7 +110,7 @@ public class DefaultSession implements Session<String, Object>{
         try {
             return new String(getBytes(), ResourceManager.core().getCharset());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     

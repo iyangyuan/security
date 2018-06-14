@@ -82,7 +82,7 @@ public class EhcacheSessionDao implements CacheSessionDao<String, Object>{
     
     @Override
     public List<Subject<String, Object>> queryUserSubjects(String userUnionid) {
-        throw new RuntimeException("method not implements");
+        throw new SecurityException("method not implements");
     }
     
 }

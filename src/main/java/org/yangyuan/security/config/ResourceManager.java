@@ -201,7 +201,7 @@ public class ResourceManager {
             Class<?> cls =  Class.forName(name);
             return (T) cls.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     

@@ -128,7 +128,7 @@ public class PasswordManager {
             
             return builder.toString();
         }  catch (NoSuchAlgorithmException e)  {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     

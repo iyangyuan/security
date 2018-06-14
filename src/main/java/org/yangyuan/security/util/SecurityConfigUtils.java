@@ -31,7 +31,7 @@ public class SecurityConfigUtils {
             is = new FileInputStream(CoreResource.APP_CLASS_PATH + "security.properties");
             PROPERTIES.load(is);
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         } finally {
             if(is != null){
                 try {
@@ -51,7 +51,7 @@ public class SecurityConfigUtils {
         String result = PROPERTIES.getProperty(name);
         
         if(StringUtils.isBlank(result)){
-            throw new RuntimeException("name not found");
+            throw new SecurityException("name not found");
         }
         
         return result;

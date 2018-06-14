@@ -52,7 +52,7 @@ public class SecuritySpringHook implements ApplicationContextAware, ApplicationL
     public static <T> T getBean(String name) {
         T t = (T) applicationContext.getBean(name);
         if(t == null){
-            throw new RuntimeException("bean[" + name + "] not found");
+            throw new SecurityException("bean[" + name + "] not found");
         }
         return t;
     }

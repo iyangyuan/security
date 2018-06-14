@@ -22,7 +22,7 @@ public class SecurityMD5 {
             
             return md5;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     
@@ -38,7 +38,7 @@ public class SecurityMD5 {
             
             return md5;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
     
@@ -53,7 +53,7 @@ public class SecurityMD5 {
             
             return md.digest(bytes);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
 }
