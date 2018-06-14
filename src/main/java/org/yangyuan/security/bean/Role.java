@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.yangyuan.security.bean.common.RoleAdaptor;
 
 /**
  * 用户角色模型
@@ -184,6 +185,26 @@ public class Role {
      */
     public static Role parseRole(String role){
         return parseRoles(role).get(0);
+    }
+    
+    /**
+     * 业务角色模型转换成安全框架角色模型列表
+     * <p>利用此方法可以快速将业务角色转换成安全框架角色，只需要业务角色模型实现{@link RoleAdaptor}接口即可</p>
+     * @param roleAdaptors 业务角色模型列表
+     * @return 安全框架角色模型列表
+     */
+    public static <T extends RoleAdaptor> List<Role> parseRoles(List<T> roleAdaptors){
+        StringBuilder builder = new StringBuilder(64);
+        
+        for(T roleAdaptor : roleAdaptors){
+            builder.append(roleAdaptor.getRole());
+            builder.append(",");
+        }
+        
+        String roles = new String(builder);
+        roles = roles.substring(0, roles.length() - 1);
+        
+        return Role.parseRoles(roles);
     }
     
     /**
