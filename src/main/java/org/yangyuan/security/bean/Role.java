@@ -1,7 +1,11 @@
 package org.yangyuan.security.bean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.yangyuan.security.bean.common.RoleAdaptor;
@@ -142,6 +146,88 @@ public class Role {
          * 不匹配的情况
          */
         return false;
+    }
+    
+    /**
+     * 添加角色到已有的角色列表
+     * <p>详见：{@link Role#addRoles(List, List)}</p>
+     * @param roleAdaptors 已有角色列表
+     * @param addingRoleAdaptor 新增的角色
+     * @return 合并之后的角色列表
+     */
+    public static <T extends RoleAdaptor> List<T> addRole(List<T> roleAdaptors, T addingRoleAdaptor){
+        List<T> addingRoleAdaptors = new ArrayList<T>();
+        addingRoleAdaptors.add(addingRoleAdaptor);
+        
+        return addRoles(roleAdaptors, addingRoleAdaptors);
+    }
+    
+    /**
+     * 添加角色列表到已有的角色列表
+     * <p>此方法可以处理相同角色不同等级的场景</p>
+     * <p>例如roleAdaptors中包含vip{1}，addingRoleAdaptors中包含vip{2}，那么合并之后的roleAdaptors中仅存在一个vip{2}，原来的vip{1}会被覆盖</p>
+     * @param roleAdaptors 已有角色列表
+     * @param addingRoleAdaptors 新增的角色列表
+     * @return 合并之后的角色列表
+     */
+    public static <T extends RoleAdaptor> List<T> addRoles(List<T> roleAdaptors, List<T> addingRoleAdaptors){
+        List<T> mergeRoleAdaptors = new ArrayList<T>();
+        Map<String, T> mergeMap = new HashMap<String, T>();
+        
+        for(T roleAdaptor : roleAdaptors){
+            mergeMap.put(Role.simpleRoleName(roleAdaptor.getRole()), roleAdaptor);
+        }
+        for(T roleAdaptor : addingRoleAdaptors){
+            mergeMap.put(Role.simpleRoleName(roleAdaptor.getRole()), roleAdaptor);
+        }
+        
+        Set<Entry<String, T>> entrySet = mergeMap.entrySet();
+        for(Entry<String, T> entry : entrySet){
+            mergeRoleAdaptors.add(entry.getValue());
+        }
+        
+        return mergeRoleAdaptors;
+    }
+    
+    /**
+     * 从已有的角色列表中移除指定的角色
+     * <p>详见：{@link Role#removeRoles(List, List)}</p>
+     * @param roleAdaptors 已有角色列表
+     * @param removingRoleAdaptor 移除的角色
+     * @return 合并之后的角色列表
+     */
+    public static <T extends RoleAdaptor> List<T> removeRole(List<T> roleAdaptors, T removingRoleAdaptor){
+        List<T> removingRoleAdaptors = new ArrayList<T>();
+        removingRoleAdaptors.add(removingRoleAdaptor);
+        
+        return removeRoles(roleAdaptors, removingRoleAdaptors);
+    }
+    
+    /**
+     * 从已有的角色列表中移除指定的角色列表
+     * <p>此方法可以处理相同角色不同等级的场景</p>
+     * <p>例如roleAdaptors中包含vip{1}，removingRoleAdaptors中包含vip，那么合并之后的roleAdaptors中不再包含任意等级的vip角色</p>
+     * @param roleAdaptors 已有角色列表
+     * @param removingRoleAdaptors 移除的角色列表
+     * @return 合并之后的角色列表
+     */
+    public static <T extends RoleAdaptor> List<T> removeRoles(List<T> roleAdaptors, List<T> removingRoleAdaptors){
+        List<T> mergeRoleAdaptors = new ArrayList<T>();
+        Map<String, T> mergeMap = new HashMap<String, T>();
+        
+        for(T roleAdaptor : roleAdaptors){
+            mergeMap.put(Role.simpleRoleName(roleAdaptor.getRole()), roleAdaptor);
+        }
+        for(T roleAdaptor : removingRoleAdaptors){
+            mergeMap.remove(Role.simpleRoleName(roleAdaptor.getRole()));
+        }
+        
+        Set<Entry<String, T>> entrySet = mergeMap.entrySet();
+        for(Entry<String, T> entry : entrySet){
+            mergeRoleAdaptors.add(entry.getValue());
+        }
+        
+        return mergeRoleAdaptors;
     }
     
     /**
