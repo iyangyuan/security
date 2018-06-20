@@ -13,6 +13,11 @@ import org.yangyuan.security.config.ResourceManager;
  */
 public class BasicAuth {
     /**
+     * 表达式分隔符
+     */
+    public static final String SEPARATOR = ",";
+    
+    /**
      * 授权列表
      */
     private final List<String> authorizations;
@@ -43,7 +48,7 @@ public class BasicAuth {
             /**
              * 解析授权
              */
-            String[] _users = users.split(",");
+            String[] _users = users.split(SEPARATOR);
             List<String> authorizations = new ArrayList<String>();
             String authorization;
             byte[] bytes;
