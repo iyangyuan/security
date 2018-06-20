@@ -25,7 +25,18 @@ public class Role {
      * 大于标识符
      */
     public static final String MORE_THAN = ">";
-    
+    /**
+     * 等级开始标记
+     */
+    public static final String LEVEL_START = "{";
+    /**
+     * 等级结束标记
+     */
+    public static final String LEVEL_END = "}";
+    /**
+     * 角色列表分隔符
+     */
+    public static final String SEPARATOR = ",";
     /**
      * 角色名称
      */
@@ -89,9 +100,9 @@ public class Role {
         builder.append(this.getComparator());
         builder.append(this.getName());
         if(this.getLevel() != 0){
-            builder.append("{");
+            builder.append(LEVEL_START);
             builder.append(this.getLevel());
-            builder.append("}");
+            builder.append(LEVEL_END);
         }
         
         return new String(builder);
@@ -246,7 +257,7 @@ public class Role {
             permissionBuilder.append(role.getRole());
             
             if(i < roles.size()){
-                permissionBuilder.append(",");
+                permissionBuilder.append(SEPARATOR);
             }
         }
         
@@ -284,13 +295,13 @@ public class Role {
         
         for(T roleAdaptor : roleAdaptors){
             builder.append(roleAdaptor.getRole());
-            builder.append(",");
+            builder.append(SEPARATOR);
         }
         
         String roles = new String(builder);
         roles = roles.substring(0, roles.length() - 1);
         
-        return Role.parseRoles(roles);
+        return parseRoles(roles);
     }
     
     /**
@@ -302,42 +313,52 @@ public class Role {
         List<Role> roleList = new ArrayList<Role>();
         
         /**
+         * 格式规范
+         */
+        roles = roles.replace(" ", "");
+        
+        /**
          * 提取角色
          */
-        String[] roleArray = roles.split(",");
+        String[] _roles = roles.split(SEPARATOR);
         String name;
         int level;
         String comparator;
-        String[] units;
-        for(String role : roleArray){
-            name = StringUtils.EMPTY;  //重置角色名
-            level = 0;  //重置角色级别
-            comparator = StringUtils.EMPTY;  //重置角色操作标识符
+        char start;
+        int position;
+        int limit;
+        int capacity;
+        for(String role : _roles){
+            name = StringUtils.EMPTY;
+            level = 0;
+            comparator = StringUtils.EMPTY;
+            position = 0;
+            limit = role.indexOf(LEVEL_START);
+            capacity = role.length();
             
             /**
              * 解析操作标识符
              */
-            if(role.startsWith(LESS_THAN)){
-                comparator = LESS_THAN;
-                role = role.substring(1);
-            }
-            if(role.startsWith(MORE_THAN)){
-                comparator = MORE_THAN;
-                role = role.substring(1);
-            }
-            
-            /**
-             * 解析角色级别
-             */
-            units = role.split("\\{");
-            if(units.length > 1){
-                level = Integer.parseInt(units[1].split("}")[0]);
+            start = role.charAt(0);
+            if((start ^ LESS_THAN.charAt(0)) * (start ^ MORE_THAN.charAt(0)) == 0){
+                comparator = String.valueOf(start);
+                position = 1;
             }
             
             /**
              * 解析角色名
              */
-            name = units[0];
+            if(limit < 0){
+                limit = capacity;
+            }
+            name = role.substring(position, limit);
+            
+            /**
+             * 解析角色级别
+             */
+            if(limit != capacity){
+                level = Integer.parseInt(role.substring(limit + 1, capacity - 1));
+            }
             
             /**
              * 表达式指定了操作标识符，但未指定级别的非法情况，例如：>a
