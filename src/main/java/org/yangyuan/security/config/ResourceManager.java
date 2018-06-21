@@ -75,8 +75,8 @@ public class ResourceManager {
                         .name(SecurityConfigUtils.cellString("cookie.name"))
                         .domain(SecurityConfigUtils.cellString("cookie.domain"))
                         .path(SecurityConfigUtils.cellString("cookie.path"))
-                        .httpOnly(SecurityConfigUtils.cellBoolean("cookie.http_only"))
-                        .maxAge(SecurityConfigUtils.cellInt("cookie.max_age"))
+                        .httpOnly(SecurityConfigUtils.cellBoolean("cookie.httpOnly"))
+                        .maxAge(SecurityConfigUtils.cellInt("cookie.maxAge"))
                         .secure(SecurityConfigUtils.cellBoolean("cookie.secure"))
                         .build();
         
