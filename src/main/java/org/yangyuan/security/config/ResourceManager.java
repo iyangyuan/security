@@ -2,6 +2,10 @@ package org.yangyuan.security.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.yangyuan.security.config.proxy.JdbcRealmAdaptorProxy;
+import org.yangyuan.security.config.proxy.RedisResourceFactoryProxy;
+import org.yangyuan.security.config.proxy.RemoteRealmAdaptorProxy;
+import org.yangyuan.security.config.proxy.SecurityAuthHandlerProxy;
 import org.yangyuan.security.core.SecurityFilterManager;
 import org.yangyuan.security.core.common.CacheManager;
 import org.yangyuan.security.core.common.ConcurrentSubjectControl;
@@ -40,6 +44,7 @@ public class ResourceManager {
     
     private static void load(){
         RedisResourceFactory redisResourceFactory = getInstance(SecurityConfigUtils.cellString("common.redisResourceFactory"));
+        redisResourceFactory = new RedisResourceFactoryProxy(redisResourceFactory);
         commonResource =
         CommonResource.custom()
                         .redisResourceFactory(redisResourceFactory)
@@ -87,6 +92,7 @@ public class ResourceManager {
         PrincipalFactory principalFactory = getInstance(SecurityConfigUtils.cellString("core.principalFactory"));
         CacheManager cacheManager = getInstance(SecurityConfigUtils.cellString("core.cacheManager"));
         SecurityAuthHandler securityAuthHandler = getInstance(SecurityConfigUtils.cellString("core.securityAuthHandler"));
+        securityAuthHandler = new SecurityAuthHandlerProxy(securityAuthHandler);
         ConcurrentSubjectControl concurrentSubjectControl = getInstance(SecurityConfigUtils.cellString("core.concurrentSubjectControl"));
         coreResource = 
         CoreResource.custom()
@@ -105,7 +111,9 @@ public class ResourceManager {
         AuthSessionDao jdbcSessionDao = getInstance(SecurityConfigUtils.cellString("dao.jdbcSessionDao"));
         AuthSessionDao remoteSessionDao = getInstance(SecurityConfigUtils.cellString("dao.remoteSessionDao"));
         JdbcRealmAdaptor jdbcRealmAdaptor = getInstance(SecurityConfigUtils.cellString("dao.jdbcRealmAdaptor"));
+        jdbcRealmAdaptor = new JdbcRealmAdaptorProxy(jdbcRealmAdaptor);
         RemoteRealmAdaptor remoteRealmAdaptor = getInstance(SecurityConfigUtils.cellString("dao.remoteRealmAdaptor"));
+        remoteRealmAdaptor = new RemoteRealmAdaptorProxy(remoteRealmAdaptor);
         daoResource = 
         DaoResource.custom()
                     .ehcacheSessionDao(ehcacheSessionDao)
@@ -201,7 +209,8 @@ public class ResourceManager {
             Class<?> cls =  Class.forName(name);
             return (T) cls.newInstance();
         } catch (Exception e) {
-            throw new SecurityException(e);
+            log.warn("Load class failed! Please ensure you did not use this class.", e);
+            return null;
         }
     }
     
