@@ -2,6 +2,8 @@ package org.yangyuan.security.spring;
 
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -18,6 +20,8 @@ import org.yangyuan.security.dao.RedisSessionDao;
  */
 @Component
 public class SecuritySpringHook implements ApplicationContextAware, ApplicationListener<ContextClosedEvent>{
+    private static final Log log = LogFactory.getLog(SecuritySpringHook.class);
+    
     private static ApplicationContext applicationContext;
     
     @Override
@@ -50,9 +54,11 @@ public class SecuritySpringHook implements ApplicationContextAware, ApplicationL
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String name) {
-        T t = (T) applicationContext.getBean(name);
-        if(t == null){
-            throw new SecurityException("bean[" + name + "] not found");
+        T t = null;
+        try {
+            t = (T) applicationContext.getBean(name);
+        } catch (Exception e) {
+            log.warn("can't load bean[" + name + "] from spring ioc container!", e);
         }
         return t;
     }
