@@ -19,7 +19,7 @@ public class SecurityAuthHandlerProxy implements SecurityAuthHandler{
         this.securityAuthHandler = securityAuthHandler;
     }
     
-    private void checkSecurityAuthHandler(){
+    private void assertSecurityAuthHandlerNotNull(){
         if(securityAuthHandler == null){
             throw new SecurityException("Load security.properties[core.securityAuthHandler] failed!");
         }
@@ -27,19 +27,19 @@ public class SecurityAuthHandlerProxy implements SecurityAuthHandler{
     
     @Override
     public void onSuccess(HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) {
-        checkSecurityAuthHandler();
+        assertSecurityAuthHandlerNotNull();
         securityAuthHandler.onSuccess(request, response, handler);
     }
 
     @Override
     public void onAuthFail(HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) {
-        checkSecurityAuthHandler();
+        assertSecurityAuthHandlerNotNull();
         securityAuthHandler.onAuthFail(request, response, handler);
     }
 
     @Override
     public void onForbiddenFail(HttpServletRequest request, HttpServletResponse response, HandlerMethod handler) {
-        checkSecurityAuthHandler();
+        assertSecurityAuthHandlerNotNull();
         securityAuthHandler.onForbiddenFail(request, response, handler);
     }
 
