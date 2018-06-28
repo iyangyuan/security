@@ -17,6 +17,10 @@ public class SecurityConfigUtils {
      * 配置容器
      */
     private static final Properties PROPERTIES = new Properties();
+    /**
+     * 配置文件路径
+     */
+    private static final String PROPERTIES_FILE_PATH = CoreResource.APP_CLASS_PATH + "security.properties";
     
     static {
         SecurityConfigUtils.init();
@@ -28,7 +32,7 @@ public class SecurityConfigUtils {
     private static void init(){
         InputStream is = null;
         try{
-            is = new FileInputStream(CoreResource.APP_CLASS_PATH + "security.properties");
+            is = new FileInputStream(PROPERTIES_FILE_PATH);
             PROPERTIES.load(is);
         } catch(Exception e) {
             throw new SecurityException(e);
@@ -51,7 +55,7 @@ public class SecurityConfigUtils {
         String result = PROPERTIES.getProperty(name);
         
         if(StringUtils.isBlank(result)){
-            throw new SecurityException("name not found");
+            throw new SecurityException("can't find name[" + name + "] from config[" + PROPERTIES_FILE_PATH + "]!");
         }
         
         return result;

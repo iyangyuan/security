@@ -14,10 +14,18 @@ import org.yangyuan.security.core.common.SecurityManager;
  * @date 2018年3月31日
  */
 public class CoreResource {
+    /**
+     * windows盘符正则
+     */
     private static final Pattern DISK_PATTERN = Pattern.compile("^/[a-zA-Z]:/");
-    
+    /**
+     * 全局统一编码
+     */
     private static final String UNIFY_CHARSET = "UTF-8";
     
+    /**
+     * 应用classes目录绝对路径，以/结尾
+     */
     public static final String APP_CLASS_PATH;
     
     static {
@@ -29,11 +37,11 @@ public class CoreResource {
     }
     
     /**
-     * 全局编码
+     * 全局统一编码
      */
     private final String charset;
     /**
-     * 应用class目录
+     * 应用classes目录绝对路径，以/结尾
      */
     private final String appClassPath;
     /**
