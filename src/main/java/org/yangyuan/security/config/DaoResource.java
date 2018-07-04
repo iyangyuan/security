@@ -2,6 +2,7 @@ package org.yangyuan.security.config;
 
 import org.yangyuan.security.dao.common.AuthSessionDao;
 import org.yangyuan.security.dao.common.CacheSessionDao;
+import org.yangyuan.security.realm.common.CaptchaRealmAdaptor;
 import org.yangyuan.security.realm.common.JdbcRealmAdaptor;
 import org.yangyuan.security.realm.common.Realm;
 import org.yangyuan.security.realm.common.RemoteRealmAdaptor;
@@ -25,6 +26,10 @@ public class DaoResource {
      */
     private final Realm jdbcRealm;
     /**
+     * 验证码数据源
+     */
+    private final Realm captchaRealm;
+    /**
      * 第三方授权数据源
      */
     private final Realm remoteRealm;
@@ -41,6 +46,10 @@ public class DaoResource {
      */
     private final JdbcRealmAdaptor jdbcRealmAdaptor;
     /**
+     * 验证码数据源适配器
+     */
+    private final CaptchaRealmAdaptor captchaRealmAdaptor;
+    /**
      * 第三方授权数据源适配器
      */
     private final RemoteRealmAdaptor remoteRealmAdaptor;
@@ -49,11 +58,13 @@ public class DaoResource {
         this.ehcacheSessionDao = builder.ehcacheSessionDao;
         this.redisSessionDao = builder.redisSessionDao;
         this.jdbcRealm = builder.jdbcRealm;
+        this.captchaRealm = builder.captchaRealm;
         this.remoteRealm = builder.remoteRealm;
         this.jdbcSessionDao = builder.jdbcSessionDao;
         this.remoteSessionDao = builder.remoteSessionDao;
         this.jdbcRealmAdaptor = builder.jdbcRealmAdaptor;
         this.remoteRealmAdaptor = builder.remoteRealmAdaptor;
+        this.captchaRealmAdaptor = builder.captchaRealmAdaptor;
     }
     
     public CacheSessionDao<String, Object> getEhcacheSessionDao() {
@@ -80,7 +91,13 @@ public class DaoResource {
     public RemoteRealmAdaptor getRemoteRealmAdaptor() {
         return remoteRealmAdaptor;
     }
-
+    public Realm getCaptchaRealm() {
+        return captchaRealm;
+    }
+    public CaptchaRealmAdaptor getCaptchaRealmAdaptor() {
+        return captchaRealmAdaptor;
+    }
+    
     /**
      * 自定义数据访问资源构造器
      * @return
@@ -108,6 +125,10 @@ public class DaoResource {
          */
         private Realm jdbcRealm;
         /**
+         * 验证码数据源
+         */
+        private Realm captchaRealm;
+        /**
          * 第三方授权数据源
          */
         private Realm remoteRealm;
@@ -123,6 +144,10 @@ public class DaoResource {
          * 持久化数据源适配器
          */
         private JdbcRealmAdaptor jdbcRealmAdaptor;
+        /**
+         * 验证码数据源适配器
+         */
+        private CaptchaRealmAdaptor captchaRealmAdaptor;
         /**
          * 第三方授权数据源适配器
          */
@@ -160,6 +185,14 @@ public class DaoResource {
             this.remoteRealmAdaptor = remoteRealmAdaptor;
             return this;
         }
+        public Builder captchaRealm(Realm captchaRealm) {
+            this.captchaRealm = captchaRealm;
+            return this;
+        }
+        public Builder captchaRealmAdaptor(CaptchaRealmAdaptor captchaRealmAdaptor) {
+            this.captchaRealmAdaptor = captchaRealmAdaptor;
+            return this;
+        }
         public DaoResource build(){
             return new DaoResource(this);
         }
@@ -193,6 +226,14 @@ public class DaoResource {
         }
         builder.append(")\n");
         
+        builder.append("[CaptchaRealm](");
+        if(getCaptchaRealm() == null){
+            builder.append("null");
+        }else{
+            builder.append(getCaptchaRealm().getClass().getName());
+        }
+        builder.append(")\n");
+        
         builder.append("[RemoteRealm](");
         if(getRemoteRealm() == null){
             builder.append("null");
@@ -222,6 +263,14 @@ public class DaoResource {
             builder.append("null");
         }else{
             builder.append(getJdbcRealmAdaptor().getClass().getName());
+        }
+        builder.append(")\n");
+        
+        builder.append("[CaptchaRealmAdaptor](");
+        if(getCaptchaRealmAdaptor() == null){
+            builder.append("null");
+        }else{
+            builder.append(getCaptchaRealmAdaptor().getClass().getName());
         }
         builder.append(")\n");
         

@@ -33,7 +33,7 @@ public class DefaultSecurityManager implements SecurityManager{
          * 识别登录方式
          */
         User user = null;
-        if(token instanceof UsernamePasswordToken){  //本地账号密码登录
+        if(token instanceof JdbcToken){  //本地登录
             user = ResourceManager.dao().getJdbcSessionDao().auth(token);
         }
         if(token instanceof RemoteToken){  //第三方登录

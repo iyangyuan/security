@@ -1,39 +1,39 @@
 package org.yangyuan.security.core;
 
 /**
- * 本地用户名、密码模式令牌实现
+ * 本地验证码模式令牌实现
  * @author yangyuan
- * @date 2017年4月26日
+ * @date 2018年7月4日
  */
-public class UsernamePasswordToken extends JdbcToken {
+public class CaptchaToken extends JdbcToken{
     /**
-     * 密码
+     * 验证码
      */
-    private final String passwrod;
+    private final String code;
     
     /**
      * remember固定为true的构造方法
      * @param username 用户名
-     * @param passwrod 密码
+     * @param code 验证码
      */
-    public UsernamePasswordToken(String username, String passwrod){
+    public CaptchaToken(String username, String code) {
         super(username, true);
-        this.passwrod = passwrod;
+        this.code = code;
     }
     
     /**
      * 自定义remember的构造方法
      * @param username 用户名
-     * @param passwrod 密码
+     * @param code 验证码
      * @param remember 记住我
      */
-    public UsernamePasswordToken(String username, String passwrod, boolean remember){
+    public CaptchaToken(String username, String code, boolean remember) {
         super(username, remember);
-        this.passwrod = passwrod;
+        this.code = code;
     }
     
-    public String getPasswrod() {
-        return passwrod;
+    public String getCode() {
+        return code;
     }
     
     @Override
@@ -42,8 +42,8 @@ public class UsernamePasswordToken extends JdbcToken {
         
         builder.append(super.toString());
         
-        builder.append("[passwrod](");
-        builder.append(getPasswrod());
+        builder.append("[code](");
+        builder.append(getCode());
         builder.append(")\n");
         
         return new String(builder);

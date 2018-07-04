@@ -2,6 +2,7 @@ package org.yangyuan.security.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.yangyuan.security.config.proxy.CaptchaRealmAdaptorProxy;
 import org.yangyuan.security.config.proxy.JdbcRealmAdaptorProxy;
 import org.yangyuan.security.config.proxy.RedisResourceFactoryProxy;
 import org.yangyuan.security.config.proxy.RemoteRealmAdaptorProxy;
@@ -15,6 +16,7 @@ import org.yangyuan.security.core.common.SecurityManager;
 import org.yangyuan.security.dao.common.AuthSessionDao;
 import org.yangyuan.security.dao.common.CacheSessionDao;
 import org.yangyuan.security.dao.common.RedisResourceFactory;
+import org.yangyuan.security.realm.common.CaptchaRealmAdaptor;
 import org.yangyuan.security.realm.common.JdbcRealmAdaptor;
 import org.yangyuan.security.realm.common.Realm;
 import org.yangyuan.security.realm.common.RemoteRealmAdaptor;
@@ -107,11 +109,14 @@ public class ResourceManager {
         CacheSessionDao<String, Object> ehcacheSessionDao = getInstance(SecurityConfigUtils.cellString("dao.ehcacheSessionDao"));
         CacheSessionDao<String, Object> redisSessionDao = getInstance(SecurityConfigUtils.cellString("dao.redisSessionDao"));
         Realm jdbcRealm = getInstance(SecurityConfigUtils.cellString("dao.jdbcRealm"));
+        Realm captchaRealm = getInstance(SecurityConfigUtils.cellString("dao.captchaRealm"));
         Realm remoteRealm = getInstance(SecurityConfigUtils.cellString("dao.remoteRealm"));
         AuthSessionDao jdbcSessionDao = getInstance(SecurityConfigUtils.cellString("dao.jdbcSessionDao"));
         AuthSessionDao remoteSessionDao = getInstance(SecurityConfigUtils.cellString("dao.remoteSessionDao"));
         JdbcRealmAdaptor jdbcRealmAdaptor = getInstance(SecurityConfigUtils.cellString("dao.jdbcRealmAdaptor"));
         jdbcRealmAdaptor = new JdbcRealmAdaptorProxy(jdbcRealmAdaptor);
+        CaptchaRealmAdaptor captchaRealmAdaptor = getInstance(SecurityConfigUtils.cellString("dao.captchaRealmAdaptor"));
+        captchaRealmAdaptor = new CaptchaRealmAdaptorProxy(captchaRealmAdaptor);
         RemoteRealmAdaptor remoteRealmAdaptor = getInstance(SecurityConfigUtils.cellString("dao.remoteRealmAdaptor"));
         remoteRealmAdaptor = new RemoteRealmAdaptorProxy(remoteRealmAdaptor);
         daoResource = 
@@ -119,10 +124,12 @@ public class ResourceManager {
                     .ehcacheSessionDao(ehcacheSessionDao)
                     .redisSessionDao(redisSessionDao)
                     .jdbcRealm(jdbcRealm)
+                    .captchaRealm(captchaRealm)
                     .remoteRealm(remoteRealm)
                     .jdbcSessionDao(jdbcSessionDao)
                     .remoteSessionDao(remoteSessionDao)
                     .jdbcRealmAdaptor(jdbcRealmAdaptor)
+                    .captchaRealmAdaptor(captchaRealmAdaptor)
                     .remoteRealmAdaptor(remoteRealmAdaptor)
                     .build();
         
