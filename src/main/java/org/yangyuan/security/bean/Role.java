@@ -121,7 +121,7 @@ public class Role {
         /**
          * 角色名称不一致，肯定不匹配
          */
-        if(!this.name.equals(role.getName())){
+        if(!wildcardMatches(role.getName(), this.name)){
             return false;
         }
         
@@ -157,6 +157,48 @@ public class Role {
          * 不匹配的情况
          */
         return false;
+    }
+    
+    /**
+     * 通配符字符串符匹配
+     * <br>
+     * <code>
+     *  此方法摘自LeetCode，详见<a href="https://leetcode.com/problems/wildcard-matching/discuss/17810/Linear-runtime-and-constant-space-solution" target="blank">《Linear runtime and constant space solution》</a>
+     * </code>
+     * @param text 匹配文本
+     * @param pattern 通配符表达式
+     * @return
+     */
+    private static boolean wildcardMatches(String text, String pattern){
+        int s = 0, p = 0, match = 0, starIdx = -1;            
+        while (s < text.length()){
+            // advancing both pointers
+            if (p < pattern.length()  && (pattern.charAt(p) == '?' || text.charAt(s) == pattern.charAt(p))){
+                s++;
+                p++;
+            }
+            // * found, only advancing pattern pointer
+            else if (p < pattern.length() && pattern.charAt(p) == '*'){
+                starIdx = p;
+                match = s;
+                p++;
+            }
+           // last pattern pointer was *, advancing string pointer
+            else if (starIdx != -1){
+                p = starIdx + 1;
+                match++;
+                s = match;
+            }
+           //current pattern pointer is not star, last patter pointer was not *
+          //characters do not match
+            else return false;
+        }
+        
+        //check for remaining characters in pattern
+        while (p < pattern.length() && pattern.charAt(p) == '*')
+            p++;
+        
+        return p == pattern.length();
     }
     
     /**
