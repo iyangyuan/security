@@ -3,16 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.yangyuan</groupId>
-	<artifactId>security</artifactId>
+	<artifactId>security-spring-boot</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
+    
+    <!-- change to yourself parent project -->
+    <parent>
+		<groupId>com.osiris</groupId>
+		<artifactId>osiris</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
 	<name>security</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-version>4.3.2.RELEASE</spring-version>
+		<!--<spring-version>4.3.2.RELEASE</spring-version>-->
 		<redis-version>2.9.0</redis-version>
 		<httpclient-version>4.5.3</httpclient-version>
 		<fastjson-version>1.2.31</fastjson-version>
@@ -26,9 +33,8 @@
 
 		<!-- springframework -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring-version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<!-- apache commons -->
