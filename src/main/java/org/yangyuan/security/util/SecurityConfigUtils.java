@@ -184,7 +184,7 @@ public class SecurityConfigUtils {
         String result = PROPERTIES.getProperty(name);
         
         if(StringUtils.isBlank(result)){
-            throw new SecurityException("can't find name[" + name + "] from config!");
+            return StringUtils.EMPTY;
         }
         
         return result;
