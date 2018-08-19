@@ -1,11 +1,6 @@
 package org.yangyuan.security.config;
 
-import java.util.regex.Pattern;
-
-import org.yangyuan.security.core.common.CacheManager;
-import org.yangyuan.security.core.common.ConcurrentSubjectControl;
-import org.yangyuan.security.core.common.PrincipalFactory;
-import org.yangyuan.security.core.common.SecurityAuthHandler;
+import org.yangyuan.security.core.common.*;
 import org.yangyuan.security.core.common.SecurityManager;
 
 /**
@@ -15,35 +10,13 @@ import org.yangyuan.security.core.common.SecurityManager;
  */
 public class CoreResource {
     /**
-     * windows盘符正则
-     */
-    private static final Pattern DISK_PATTERN = Pattern.compile("^/[a-zA-Z]:/");
-    /**
      * 全局统一编码
      */
     private static final String UNIFY_CHARSET = "UTF-8";
-    
-    /**
-     * 应用classes目录绝对路径，以/结尾
-     */
-    public static final String APP_CLASS_PATH;
-    
-    static {
-        String path = CoreResource.class.getClassLoader().getResource("/").getPath();
-        if(DISK_PATTERN.matcher(path).find()){
-            path = path.replaceFirst("/", "");
-        }
-        APP_CLASS_PATH = path;
-    }
-    
     /**
      * 全局统一编码
      */
     private final String charset;
-    /**
-     * 应用classes目录绝对路径，以/结尾
-     */
-    private final String appClassPath;
     /**
      * 是否使用客户端记录的subject登陆
      * <br>
@@ -75,7 +48,6 @@ public class CoreResource {
     
     public CoreResource(Builder builder){
         this.charset = builder.charset;
-        this.appClassPath = builder.appClassPath;
         this.useClientSubjectLogin = builder.useClientSubjectLogin;
         this.securityManager = builder.securityManager;
         this.principalFactory = builder.principalFactory;
@@ -86,9 +58,6 @@ public class CoreResource {
     
     public String getCharset() {
         return charset;
-    }
-    public String getAppClassPath() {
-        return appClassPath;
     }
     public boolean isUseClientSubjectLogin() {
         return useClientSubjectLogin;
@@ -114,8 +83,7 @@ public class CoreResource {
      * @return
      */
     public static Builder custom(){
-        return new Builder().charset(UNIFY_CHARSET)
-                            .appClassPath(APP_CLASS_PATH);
+        return new Builder().charset(UNIFY_CHARSET);
     }
     
     /**
@@ -204,10 +172,6 @@ public class CoreResource {
         
         builder.append("[charset](");
         builder.append(getCharset());
-        builder.append(")\n");
-        
-        builder.append("[appClassPath](");
-        builder.append(getAppClassPath());
         builder.append(")\n");
         
         builder.append("[useClientSubjectLogin](");
