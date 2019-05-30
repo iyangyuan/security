@@ -1,19 +1,15 @@
 package org.yangyuan.security.core;
 
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.yangyuan.security.config.ResourceManager;
 import org.yangyuan.security.core.common.Session;
 import org.yangyuan.security.core.common.Subject;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import javax.servlet.http.HttpServletRequest;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 默认安全认证主题实现(不可变对象)
@@ -91,22 +87,14 @@ public final class DefaultSubject implements Subject<String, Object>{
      * @return 如果请求中带有principal，则利用客户端指定的principal创建subject；如果找不到principal，则返回null
      */
     public static DefaultSubject of(HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        if(cookies == null){
-            return null;
-        }
-        
         String clientPrincipal = null;
-        for(Cookie cookie : cookies){
-            if(ResourceManager.cookie().getName().equals(cookie.getName())){
-                clientPrincipal = cookie.getValue();
-                break;
-            }
-        }
-        if(StringUtils.isBlank(clientPrincipal)){
+
+        clientPrincipal = ResourceManager.core().getPrincipalReader().read(request);
+
+        if(clientPrincipal == null){
             return null;
         }
-        
+
         return new DefaultSubject(clientPrincipal);
     }
     

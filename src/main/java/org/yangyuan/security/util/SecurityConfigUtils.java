@@ -2,8 +2,10 @@ package org.yangyuan.security.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.yangyuan.security.servlet.filter.SecurityHttpServletRequestWrapperFilter;
 
 import java.util.Properties;
 
@@ -64,6 +66,8 @@ public class SecurityConfigUtils {
     private String coreConcurrentSubjectControl;
     @Value("${security.core.securityAuthHandler:}")
     private String coreSecurityAuthHandler;
+    @Value("${security.core.principalReader:cookie}")
+    private String corePrincipalReader;
 
     /**
      * dao
@@ -149,6 +153,7 @@ public class SecurityConfigUtils {
         PROPERTIES.put("core.useClientSubjectLogin", coreUseClientSubjectLogin);
         PROPERTIES.put("core.concurrentSubjectControl", coreConcurrentSubjectControl);
         PROPERTIES.put("core.securityAuthHandler", coreSecurityAuthHandler);
+        PROPERTIES.put("core.corePrincipalReader", corePrincipalReader);
         PROPERTIES.put("dao.ehcacheSessionDao", daoEhcacheSessionDao);
         PROPERTIES.put("dao.redisSessionDao", daoRedisSessionDao);
         PROPERTIES.put("dao.jdbcRealm", daoJdbcRealm);
@@ -173,6 +178,20 @@ public class SecurityConfigUtils {
         PROPERTIES.put("captcha.image.periodMaxWrongCount", captchaImagePeriodMaxWrongCount);
 
         return new Object();
+    }
+
+    /**
+     * 注入过滤器
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean securityHttpServletRequestWrapperFilter() {
+        FilterRegistrationBean registry = new FilterRegistrationBean();
+        registry.setFilter(new SecurityHttpServletRequestWrapperFilter());
+        registry.addUrlPatterns("/*");
+        registry.setName("securityHttpServletRequestWrapperFilter");
+        registry.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
+        return registry;
     }
 
     /**

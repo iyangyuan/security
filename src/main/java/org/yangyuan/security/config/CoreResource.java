@@ -45,7 +45,11 @@ public class CoreResource {
      * 并发主题控制器
      */
     private final ConcurrentSubjectControl concurrentSubjectControl;
-    
+    /**
+     * principal读取器
+     */
+    private final PrincipalReader principalReader;
+
     public CoreResource(Builder builder){
         this.charset = builder.charset;
         this.useClientSubjectLogin = builder.useClientSubjectLogin;
@@ -54,6 +58,7 @@ public class CoreResource {
         this.cacheManager = builder.cacheManager;
         this.securityAuthHandler = builder.securityAuthHandler;
         this.concurrentSubjectControl = builder.concurrentSubjectControl;
+        this.principalReader = builder.principalReader;
     }
     
     public String getCharset() {
@@ -76,6 +81,9 @@ public class CoreResource {
     }
     public ConcurrentSubjectControl getConcurrentSubjectControl() {
         return concurrentSubjectControl;
+    }
+    public PrincipalReader getPrincipalReader() {
+        return principalReader;
     }
 
     /**
@@ -128,7 +136,11 @@ public class CoreResource {
          * 并发主题控制器
          */
         private ConcurrentSubjectControl concurrentSubjectControl;
-        
+        /**
+         * principal读取器
+         */
+        private PrincipalReader principalReader;
+
         public Builder charset(String charset) {
             this.charset = charset;
             return this;
@@ -159,6 +171,10 @@ public class CoreResource {
         }
         public Builder concurrentSubjectControl(ConcurrentSubjectControl concurrentSubjectControl) {
             this.concurrentSubjectControl = concurrentSubjectControl;
+            return this;
+        }
+        public Builder principalReader(PrincipalReader principalReader) {
+            this.principalReader = principalReader;
             return this;
         }
         public CoreResource build(){

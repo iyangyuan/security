@@ -2,16 +2,9 @@ package org.yangyuan.security.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.yangyuan.security.config.proxy.CaptchaRealmAdaptorProxy;
-import org.yangyuan.security.config.proxy.JdbcRealmAdaptorProxy;
-import org.yangyuan.security.config.proxy.RedisResourceFactoryProxy;
-import org.yangyuan.security.config.proxy.RemoteRealmAdaptorProxy;
-import org.yangyuan.security.config.proxy.SecurityAuthHandlerProxy;
-import org.yangyuan.security.core.SecurityFilterManager;
-import org.yangyuan.security.core.common.CacheManager;
-import org.yangyuan.security.core.common.ConcurrentSubjectControl;
-import org.yangyuan.security.core.common.PrincipalFactory;
-import org.yangyuan.security.core.common.SecurityAuthHandler;
+import org.yangyuan.security.config.proxy.*;
+import org.yangyuan.security.core.*;
+import org.yangyuan.security.core.common.*;
 import org.yangyuan.security.core.common.SecurityManager;
 import org.yangyuan.security.dao.common.AuthSessionDao;
 import org.yangyuan.security.dao.common.CacheSessionDao;
@@ -96,7 +89,21 @@ public class ResourceManager {
         SecurityAuthHandler securityAuthHandler = getInstance(SecurityConfigUtils.cellString("core.securityAuthHandler"));
         securityAuthHandler = new SecurityAuthHandlerProxy(securityAuthHandler);
         ConcurrentSubjectControl concurrentSubjectControl = getInstance(SecurityConfigUtils.cellString("core.concurrentSubjectControl"));
-        coreResource = 
+        String principalReaderName = SecurityConfigUtils.cellString("core.corePrincipalReader");
+        PrincipalReader principalReader = null;
+        if(principalReaderName.equals("cookie")){
+            principalReader = new CookiePrincipalReader(SecurityConfigUtils.cellString("cookie.name"));
+        }
+        if(principalReaderName.startsWith("header/")){
+            principalReader = new HeaderPrincipalReader(principalReaderName.split("/")[1]);
+        }
+        if(principalReaderName.startsWith("url/")){
+            principalReader = new UrlPrincipalReader(principalReaderName.split("/")[1]);
+        }
+        if(principalReaderName.startsWith("json-body/")){
+            principalReader = new JsonBodyPrincipalReader(principalReaderName.split("/")[1]);
+        }
+        coreResource =
         CoreResource.custom()
                         .useClientSubjectLogin(SecurityConfigUtils.cellBoolean("core.useClientSubjectLogin"))
                         .securityManager(securityManager)
@@ -104,6 +111,7 @@ public class ResourceManager {
                         .cacheManager(cacheManager)
                         .securityAuthHandler(securityAuthHandler)
                         .concurrentSubjectControl(concurrentSubjectControl)
+                        .principalReader(principalReader)
                         .build();
         
         CacheSessionDao<String, Object> ehcacheSessionDao = getInstance(SecurityConfigUtils.cellString("dao.ehcacheSessionDao"));
