@@ -7,19 +7,18 @@
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
     
-    <!-- change to yourself parent project -->
+    <!-- NOTE: Change to yourself parent project -->
     <parent>
-		<groupId>com.osiris</groupId>
-		<artifactId>osiris</artifactId>
+		<groupId>org.yangyuan</groupId>
+		<artifactId>yangyuan</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<name>security</name>
-	<url>http://maven.apache.org</url>
+	<name>security-spring-boot</name>
+	<url>https://github.com/iyangyuan/security/tree/security-spring-boot</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--<spring-version>4.3.2.RELEASE</spring-version>-->
 		<redis-version>2.9.0</redis-version>
 		<httpclient-version>4.5.3</httpclient-version>
 		<fastjson-version>1.2.31</fastjson-version>
