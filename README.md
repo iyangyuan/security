@@ -24,10 +24,11 @@
 * 基础的在线会话管理
 * 验证码框架封装
 * 第三方登录集成
+* 支持从*Header*、*Cookie*、*URL*、*Body*中获取Token
 
 ## 主要依赖
 
-* Spring MVC，基础依赖
+* Spring Boot，基础依赖
 * Httpclient，第三方登陆依赖
 * FastJson，序列化依赖
 * Ehcache，缓存依赖
