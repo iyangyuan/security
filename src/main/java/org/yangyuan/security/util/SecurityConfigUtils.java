@@ -34,7 +34,7 @@ public class SecurityConfigUtils {
      */
     @Value("${security.cookie.name:sid}")
     private String cookieName;
-    @Value("${security.cookie.domain}")
+    @Value("${security.cookie.domain:yangyuan.org}")
     private String cookieDomain;
     @Value("${security.cookie.path:/}")
     private String cookiePath;
